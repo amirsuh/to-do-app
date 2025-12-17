@@ -7,10 +7,11 @@ import { Helloworld } from "./component/helloworld/helloworld";
 import { Child } from "./component/child/child";
 import { Counter } from "./component/counter/counter";
 import {Highlight} from './directive/highlight.directive'
+import { ApiBind } from "./component/api-bind/api-bind";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MatToolbarModule, RouterLink, Helloworld, Child, Counter,Highlight],
+  imports: [RouterOutlet, MatToolbarModule, RouterLink, Helloworld, Child, Counter, Highlight, ApiBind],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

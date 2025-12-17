@@ -1,13 +1,8 @@
 import { HttpInterceptorFn } from '@angular/common/http';
-import { inject } from '@angular/core';
-import { Auth } from '../services/auth';
-import { catchError, of } from 'rxjs';
+import { catchError, of, throwError } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const authService = inject(Auth);
-  const token = authService.getToken();
-  if (token) {
-    req = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
-  }
-  return next(req).pipe(catchError(err => { /* global error handling */ return of(); }));
+  const token = 'fake-token';
+  const authReq = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
+  return next(authReq).pipe(catchError(err => { /* handle 401 */ return throwError(() => err); }));
 };
