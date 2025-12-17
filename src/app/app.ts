@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal, WritableSignal } from '@angular/core';
+import { Component, signal, ViewEncapsulation, WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterLink, RouterOutlet } from '@angular/router';
@@ -14,7 +14,8 @@ import { HomeComponent } from "./component/home-component/home-component";
   selector: 'app-root',
   imports: [RouterOutlet, MatToolbarModule, RouterLink, Helloworld, Child, Counter, Highlight, ApiBind, HomeComponent],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
+  encapsulation:ViewEncapsulation.ShadowDom
 })
 export class App {
   protected readonly title = signal('todo-app');
