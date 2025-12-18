@@ -12,7 +12,7 @@ import { HomeComponent } from "./component/home-component/home-component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MatToolbarModule, RouterLink, Helloworld, Child, Counter, Highlight, ApiBind, HomeComponent],
+  imports: [RouterOutlet, MatToolbarModule, RouterLink,Child],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   encapsulation:ViewEncapsulation.ShadowDom
@@ -25,6 +25,7 @@ export class App {
   //WritableSignal<string> = signal('fgcr');
   newTodo = '';
   todos = signal<string[]>([]);
+isMenuActive = false;
 
 
   addTodo(){
@@ -42,4 +43,8 @@ export class App {
     return index;
   }
 
+  // Method to toggle the menu on mobile
+  toggleMenu() {
+    this.isMenuActive = !this.isMenuActive;
+  }
 }
