@@ -22,5 +22,9 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./component/api-bind/api-bind').then((m) => m.ApiBind),
   },
-
+{
+    path: 'behvssignal',
+    loadComponent: () =>
+      import('./component/beh-vs-signal/beh-vs-signal').then((m) => m.BehVsSignal),
+  },
 ];
