@@ -1,2 +1,92 @@
 <input type="text" #showsInput/>
 <input type="text" #showsInputText/>
+
+<!-- @for(tmft of tapMapFilterTap;track tmft){
+<p>
+  {{tmft}}
+</p>
+}
+@for(tmft of helloWorld;track tmft){
+<p>
+  {{tmft}}
+</p>
+}
+@for(tmft of concatenatedData;track tmft){
+<p>
+  {{tmft}}
+</p>
+}
+@for(tmft of diableRes;track tmft){
+<p>
+  {{tmft}}
+</p>
+} -->
+<div>
+  <h3>merge</h3>
+  <p>{{merged$ | async | json}}</p>
+</div>
+<!-- <div>
+  <h3>Merged Streams</h3>
+  <ul>
+    <li *ngFor="let item of merged$ | async">
+      {{ item.stream }} → {{ item.value }}
+    </li>
+  </ul>
+</div> -->
+
+<div>
+  <!-- myObservable -->
+  <h3>My Observable (Hello World)</h3>
+  <p>{{ helloWorld }}</p>
+</div>
+
+<div>
+  <!-- doubled with tap + filter -->
+  <h3>Doubled (tap + map + filter)</h3>
+  <p>{{ tapMapFilterTap }}</p>
+</div>
+
+<div>
+  <!-- diuble$ (map + filter operators stored in variables) -->
+  <h3>Diuble$ (map + filter)</h3>
+  <p>{{ diableRes }}</p>
+</div>
+
+<div>
+  <!-- concatenated (concat source1 + source2) -->
+  <h3>Concatenated Data</h3>
+  <p>{{ concatenatedData }}</p>
+</div>
+
+<div>
+  <!-- doubleds$ (map + tap operators stored in variables) -->
+  <h3>Doubleds$ (map + tap)</h3>
+  <p>{{ doubleds$ | async }}</p>
+</div>
+
+<hr />
+
+<!-- If you want to show arrays as lists -->
+<div>
+  <h3>Source$ (async pipe)</h3>
+  <ul>
+    @for(tmft of diableRes;track tmft){
+    <li >{{ tmft }}</li>
+    }
+  </ul>
+</div>
+
+<div>
+  <h3>Sources$ with doubleds$</h3>
+  <ul>
+    @for(tmft of diableRes;track tmft){
+    <li >{{ tmft }}</li>
+    }
+  </ul>
+</div>
+<p>Latest value: {{ result$ | async }}</p>
+<p>{{combineLates() | async}}</p>
+
+<!-- <input id="input" type="text" placeholder="Type something..." />
+
+<p>Debounced value: {{ keyUp() | async }}</p> -->
