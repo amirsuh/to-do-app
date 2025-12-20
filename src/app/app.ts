@@ -1,18 +1,10 @@
-import { CommonModule } from '@angular/common';
 import { Component, signal, ViewEncapsulation, WritableSignal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router';
-import { Helloworld } from "./component/helloworld/helloworld";
-import { Child } from "./component/child/child";
-import { Counter } from "./component/counter/counter";
-import {Highlight} from './directive/highlight.directive'
-import { ApiBind } from "./component/api-bind/api-bind";
-import { HomeComponent } from "./component/home-component/home-component";
+
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MatToolbarModule, RouterLink, Child, RouterLinkActive],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   encapsulation:ViewEncapsulation.ShadowDom
