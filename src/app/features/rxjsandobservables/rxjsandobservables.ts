@@ -14,6 +14,7 @@ import {
   concat,
   concatMap,
   debounceTime,
+  delay,
   filter,
   from,
   fromEvent,
@@ -33,7 +34,26 @@ import {
 } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ajax } from 'rxjs/ajax';
-
+interface IApiUser {
+  id: number;
+  name: string;
+  email: string;
+  address: {
+    street: string;
+    city: string;
+    zipcode: string;
+  };
+  company: {
+    name: string;
+  };
+}
+// Interface for transformed data
+interface ITransformedUser {
+  userId: number;
+  userBio: string;
+  location: string;
+  employment: string;
+}
 @Component({
   selector: 'app-rxjsandobservables',
   imports: [CommonModule],
@@ -274,5 +294,39 @@ export class Rxjsandobservables implements OnInit, OnDestroy {
     return combineLatest([first, second]).pipe(
       takeUntil(stop$) // ✅ completes after 10s
     );
+  }
+
+
+  public userData$: Observable<IApiUser> = this.getUserById(1);
+
+  private getUserById(id: number): Observable<IApiUser> {
+    const mockUser: IApiUser = {
+      id,
+      name: 'Jane Doe',
+      email: 'jane.doe@example.com',
+      address: {
+        street: '123 Main St',
+        city: 'Springfield',
+        zipcode: '12345'
+      },
+      company: {
+        name: 'Acme Corp'
+      }
+    };
+
+    return of(mockUser).pipe(delay(1000));
+  }
+
+    public userDatas$: Observable<ITransformedUser> = this.getUserByIds(1).pipe(map((apiUser: IApiUser) => {
+    return {
+      userId: apiUser.id,
+      userBio: `${apiUser.name} (${apiUser.email})`,
+      location: `${apiUser.address?.city}, ${apiUser.address?.zipcode}`,
+      employment: apiUser.company?.name
+    }
+  }))
+
+  private getUserByIds(id: number) {
+    return this.http.get<IApiUser>(`https://jsonplaceholder.typicode.com/users/${id}`);
   }
 }

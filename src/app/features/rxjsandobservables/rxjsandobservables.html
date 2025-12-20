@@ -86,7 +86,38 @@
 </div>
 <p>Latest value: {{ result$ | async }}</p>
 <p>{{combineLates() | async}}</p>
+@if (userData$ | async; as user) {
+  <h2>User Profile</h2>
+  <div>Name: {{ user.name }}</div>
+  <div>Email: {{ user.email }}</div>
+} @else {
+  <div class="loading">Loading user data...</div>
+}
 
+
+<div *ngIf="userData$ | async as user; else loading">
+    <h2>User Profile</h2>
+    <div>Name: {{ user.name }}</div>
+    <div>Email: {{ user.email }}</div>
+</div>
+
+<ng-template #loading>
+    <div class="loading">Loading user data...</div>
+</ng-template>
+
+
+<div class="card" *ngIf="userDatas$ | async as user; else loading">
+    <h2>User Profile</h2>
+    <div class="bio">{{ user.userBio }}</div>
+    <div class="details">
+        <p><strong>Location:</strong> {{ user.location }}</p>
+        <p><strong>Employment:</strong> {{ user.employment }}</p>
+    </div>
+</div>
+
+<ng-template #loading>
+    <div class="loading">Loading user data...</div>
+</ng-template>
 <!-- <input id="input" type="text" placeholder="Type something..." />
 
 <p>Debounced value: {{ keyUp() | async }}</p> -->
