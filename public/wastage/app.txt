@@ -1,0 +1,100 @@
+<!-- <span>{{title()}}</span> -->
+
+<!-- <h1>To-Do App</h1>
+    <form (ngSubmit)="addTodo()">
+      <input [(ngModel)]="newTodo" name="todo" placeholder="Enter task" required />
+      <button mat-raised-button color="primary">Add</button>
+    </form>
+
+    <ul>
+      <li *ngFor="let todo of todos(); let i = index; trackBy: trackByIndex">
+        {{ todo }}
+        <button mat-button color="warn" (click)="removeTodo(i)">Remove</button>
+      </li>
+    </ul> -->
+    <app-helloworld></app-helloworld>
+    <app-child [message]="parentMessage"></app-child>
+    <app-counter [(count)]="sharedCount"></app-counter>
+    <app-api-bind></app-api-bind>
+    {{sharedCount}}
+
+    <app-home-component />
+<mat-toolbar color="primary">
+      <span>Todo App</span>
+      <span class="spacer"></span>
+      <a mat-button routerLink="/login">Login</a>
+    </mat-toolbar>
+<button class="test">blue</button>
+    <p appHighlight>Hover me</p>
+fromEvent<InputEvent>(this.showsInput.nativeElement, 'input')
+      .pipe(
+        debounceTime(500),
+        switchMap((event: any) => {
+          const query = (event.target as HTMLInputElement).value;
+          return this.http.get(`${this.apiUrl}${query}`);
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(
+        (event: any) => {
+          // const query = (event.target as HTMLInputElement).value;
+          // this.http.get(`${this.apiUrl}${query}`).subscribe(
+          //   (response) => {
+              console.log(event);
+          //   },
+          //   (error) => {
+          //     console.error('Error fetching shows:', error);
+          //   }
+          // );
+        }
+      );
+
+
+    // fromEvent(this.showsInput.nativeElement, 'input').pipe(debounceTime(500),switchMap((event:any) =>{
+    //   const query = (event.target as HTMLInputElement).value;
+    //   this.http.get(`${this.apiUrl}${query}`).
+    // })).subscribe(
+
+    //     (response) => {
+    //       console.log(response);
+    //     },
+    //     (error) => {
+    //       console.error('Error fetching shows:', error);
+    //     }
+    //   );
+
+
+    // fromEvent(this.showsInput.nativeElement, 'input')
+    //   .pipe(
+    //     // switchMap((event: any) => {
+    //     //   const query = (event.target as HTMLInputElement).value;
+    //     //   return this.http.get(`${this.apiUrl}${query}`);
+    //     // })
+    //     takeUntil(this.destroy$)
+    //   ).subscribe(
+    //     (event: any) => {
+    //       const query = (event.target as HTMLInputElement).value;
+    //       this.http.get(`${this.apiUrl}${query}`)})
+    //   .subscribe(
+    //         (response) => {
+    //           console.log(response);
+    //         },
+    //         (error) => {
+    //           console.error('Error fetching shows:', error);
+    //         }
+    //       );
+//       fromEvent(this.showsInput.nativeElement, 'input').pipe(
+//   // debounceTime(500),
+//   switchMap((event: Event) => {
+//     const query = (event.target as HTMLInputElement).value;
+//     return this.http.get(`${this.apiUrl}${query}`); // ✅ return the observable
+//   })
+// ).subscribe(
+//   (response) => {
+//     console.log(response);
+//   },
+//   (error) => {
+//     console.error('Error fetching shows:', error);
+//   }
+// );
+

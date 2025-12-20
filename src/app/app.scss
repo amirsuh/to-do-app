@@ -1,0 +1,122 @@
+.test{
+  color:blue
+}
+    /* Basic Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f4f7fc;
+    }
+
+    /* Header Container */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      background-color: #6200ea;
+      color: white;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .header-left img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .header-left span {
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+
+    /* Navigation Menu */
+    nav ul {
+      display: flex;
+      list-style: none;
+    }
+
+    nav ul li {
+      margin-right: 20px;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 400;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #bb86fc;
+    }
+
+    .active-link{
+      color: #bb86fc;
+    }
+    /* Profile Icon and Menu */
+    .profile-menu {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .profile-menu img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .profile-menu i {
+      font-size: 1.5rem;
+      color: white;
+    }
+
+    /* Mobile Menu Toggle */
+    .mobile-menu-icon {
+      display: none;
+      color: white;
+      font-size: 2rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      nav ul {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        background-color: #6200ea;
+        width: 200px;
+        border-radius: 10px;
+        padding: 10px;
+      }
+
+      nav ul li {
+        margin-bottom: 10px;
+      }
+
+      .mobile-menu-icon {
+        display: block;
+      }
+
+      .menu-active {
+        display: flex !important;
+      }
+
+      .profile-menu {
+        margin-left: auto;
+      }
+    }

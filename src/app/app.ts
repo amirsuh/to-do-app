@@ -1,20 +1,13 @@
-import { CommonModule } from '@angular/common';
-import { Component, signal, WritableSignal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterLink, RouterOutlet } from '@angular/router';
-import { Helloworld } from "./component/helloworld/helloworld";
-import { Child } from "./component/child/child";
-import { Counter } from "./component/counter/counter";
-import {Highlight} from './directive/highlight.directive'
-import { ApiBind } from "./component/api-bind/api-bind";
-import { HomeComponent } from "./component/home-component/home-component";
+import { Component, signal, ViewEncapsulation, WritableSignal } from '@angular/core';
+import { RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router';
+
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MatToolbarModule, RouterLink, Helloworld, Child, Counter, Highlight, ApiBind, HomeComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
+  encapsulation:ViewEncapsulation.ShadowDom
 })
 export class App {
   protected readonly title = signal('todo-app');
@@ -24,6 +17,7 @@ export class App {
   //WritableSignal<string> = signal('fgcr');
   newTodo = '';
   todos = signal<string[]>([]);
+isMenuActive = false;
 
 
   addTodo(){
@@ -41,4 +35,8 @@ export class App {
     return index;
   }
 
+  // Method to toggle the menu on mobile
+  toggleMenu() {
+    this.isMenuActive = !this.isMenuActive;
+  }
 }
