@@ -3,5 +3,6 @@ export const ROUTE_CONSTANTS = {
   RXJSANDOBSERVABLES:'rxjsAndObservables',
   STATEMANAGEMNETANDNGRS:'statemanagement',
   ANGULARFORMS:'angularforms',
-  ANGULARMATERIAL:'materialdesign'
+  ANGULARMATERIAL:'materialdesign',
+  FORMS:'forms'
 }

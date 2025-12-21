@@ -1,0 +1,162 @@
+<mat-card>
+  <mat-card-title>Tabs</mat-card-title>
+  <mat-tab-group>
+    <mat-tab label="Info">
+      <mat-card-title>Forms-driven(Template)</mat-card-title>
+      <mat-card-content>
+        <form #userForm="ngForm">
+          <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput [(ngModel)]="forms.name" name="name" required minlength="3" #name="ngModel" />
+            <mat-error *ngIf="name.touched && name.invalid">
+              <span *ngIf="name.errors?.['required']">
+                Name is required
+              </span>
+              <span *ngIf="name.errors?.['minlength']">
+                name should be 3 chr long
+              </span>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput [(ngModel)]="forms.email" name="email" email required type="email" #email="ngModel" />
+            <mat-error *ngIf="email.touched && email.invalid">
+              <span *ngIf="email.errors?.['required']">
+                email is required
+              </span>
+              <span *ngIf="email.errors?.['email']">
+                email should be patternised
+              </span>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input matInput [(ngModel)]="forms.password" name="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"
+              required minlength="3" type="password" #password="ngModel" />
+            <mat-error *ngIf="password.invalid && (password.touched || password.dirty)">
+              <span *ngIf="password.errors?.['required']">
+                required
+              </span>
+              <span *ngIf="password.errors?.['minlength']">
+                minlength
+              </span>
+              <span *ngIf="password.errors?.['pattern']">
+                pattern
+              </span>
+            </mat-error>
+          </mat-form-field>
+          <button [disabled]="userForm.invalid" mat-raised-button color="primary">
+            Submit
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-tab>
+    <mat-tab label="Stats">
+      <mat-card-title>reactive</mat-card-title>
+      <mat-card-content>
+        <form [formGroup]="formsSample">
+          <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" type="text"/>
+            <mat-error *ngIf="formsSample.get('name')?.invalid && (formsSample.get('name')?.touched || formsSample.get('name')?.dirty)">
+              <span *ngIf="formsSample.get('name')?.errors?.['required']">
+               required
+              </span>
+              <span *ngIf="formsSample.get('name')?.errors?.['minlength']">
+               minlength
+              </span>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" type="email"/>
+             <mat-error *ngIf="formsSample.get('email')?.invalid && (formsSample.get('email')?.touched || formsSample.get('email')?.dirty)">
+              <span *ngIf="formsSample.get('email')?.errors?.['required']">
+               required
+              </span>
+              <span *ngIf="formsSample.get('email')?.errors?.['minlength']">
+               minlength
+              </span>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input matInput formControlName="password" type="password"/>
+             <mat-error *ngIf="formsSample.get('password')?.invalid && (formsSample.get('password')?.touched || formsSample.get('password')?.dirty)">
+              <span *ngIf="formsSample.get('password')?.errors?.['required']">
+               required
+              </span>
+              <span *ngIf="formsSample.get('password')?.errors?.['minlength']">
+               minlength
+              </span>
+            </mat-error>
+          </mat-form-field>
+            <button  mat-raised-button color="primary">
+            Submit
+          </button>
+        </form>
+      </mat-card-content>
+
+    </mat-tab>
+    <mat-tab label="Settings">
+      <mat-card-title>Reactive + signal</mat-card-title>
+      <mat-card-content>
+        <form >
+          <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput  name="name" type="text" required minlength="3" [value]="username()"
+        (input)="username.set($event.target.value)"
+        placeholder="Username"
+      />
+              </mat-form-field>
+                <span *ngIf="!usernameValid() && usernameTouched()">Username is required</span>
+
+          <mat-form-field appearance="outline">
+            <mat-label>email</mat-label>
+            <input matInput type="email" name="email" email   required [value]="emails()"
+        (input)="emails.set($event.target.value)"
+        placeholder="email"/>
+
+          </mat-form-field>
+          <span *ngIf="!emailValid()">Username is required</span>
+          <mat-form-field appearance="outline">
+            <mat-label>password</mat-label>
+            <input matInput name="password" type="password" minlength="8" pattern="^(?=.*[a-z]).*$" required [value]="passwords()"
+        (input)="passwords.set($event.target.value)"
+        placeholder="email"/>
+
+          </mat-form-field>
+          <span *ngIf="!passwordValid()">Username is required</span>
+            <button  mat-raised-button color="primary">
+            Submit
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-tab>
+        <mat-tab label="Settings">
+      <mat-card-title>signal</mat-card-title>
+      <mat-card-content>
+        <form >
+          <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput  name="name" type="text" required minlength="3"/>
+
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>email</mat-label>
+            <input matInput type="email" name="email" email   required/>
+
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>password</mat-label>
+            <input matInput name="password" type="password" minlength="8" pattern="^(?=.*[a-z]).*$" required/>
+
+          </mat-form-field>
+            <button  mat-raised-button color="primary">
+            Submit
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-tab>
+  </mat-tab-group>
+</mat-card>

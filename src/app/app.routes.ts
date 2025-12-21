@@ -5,6 +5,7 @@ import { Rxjsandobservables } from './features/rxjsandobservables/rxjsandobserva
 import { Dashboard } from './features/dashboard/component/dashboard/dashboard';
 import { Statemanagement } from './features/statemanagement/statemanagement';
 import { MaterilaDesigns } from './shared/components/materila-designs/materila-designs';
+import { Forms } from './features/forms/forms';
 
 export const routes: Routes = [
   // Default redirect from '' to HOME
@@ -18,6 +19,9 @@ export const routes: Routes = [
 
   // StaetManagement route
   { path: ROUTE_CONSTANTS.STATEMANAGEMNETANDNGRS, component: Statemanagement },
+
+  // Forms route
+  { path: ROUTE_CONSTANTS.FORMS, component: Forms },
 
   { path: ROUTE_CONSTANTS.ANGULARMATERIAL, component: MaterilaDesigns },
 
