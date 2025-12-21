@@ -131,3 +131,9 @@
 
   </mat-sidenav-content>
 </mat-sidenav-container>
+<mat-form-field style="width:auto">
+  <div *ngIf="user$ | async as user">
+      <h2>Welcome, {{ user.name }}!</h2>
+      <p>Email: {{ user.email }}</p>
+    </div>
+</mat-form-field>

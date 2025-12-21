@@ -24,6 +24,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { StateService } from '../../../features/statemanagement/state-service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-materila-designs',
@@ -50,7 +52,7 @@ MatBadgeModule,
 MatProgressBarModule,
 MatProgressSpinnerModule,
 MatExpansionModule,
-MatTooltipModule,
+MatTooltipModule,CommonModule,
 MatSnackBarModule],
   templateUrl: './materila-designs.html',
   styleUrl: './materila-designs.scss',
@@ -62,4 +64,8 @@ export class MaterilaDesigns {
     { name: 'Alice', role: 'Developer' },
     { name: 'Bob', role: 'Designer' }
   ];
+  user$;
+  constructor(private userService:StateService){
+    this.user$ = this.userService.user$;
+  }
 }
