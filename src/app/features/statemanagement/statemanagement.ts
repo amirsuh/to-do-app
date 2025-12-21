@@ -1,13 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { RxjsandobservablesService } from '../../../rxjsandobservables/service/rxjsandobservables';
+import { RxjsandobservablesService } from '../rxjsandobservables/service/rxjsandobservables';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-statemanagement',
   imports: [],
-  templateUrl: './dashboard.html',
-  styleUrl: './dashboard.scss',
+  templateUrl: './statemanagement.html',
+  styleUrl: './statemanagement.scss',
 })
-export class Dashboard implements OnInit{
+export class Statemanagement implements OnInit{
   userService = inject(RxjsandobservablesService)
   ngOnInit(): void {
      this.userService.getUserData().subscribe(users => {

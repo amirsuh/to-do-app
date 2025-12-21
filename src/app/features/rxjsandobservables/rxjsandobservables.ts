@@ -15,12 +15,14 @@ import {
   concatMap,
   debounceTime,
   delay,
+  exhaustMap,
   filter,
   from,
   fromEvent,
   interval,
   map,
   merge,
+  mergeMap,
   Observable,
   of,
   retry,
@@ -34,6 +36,11 @@ import {
 } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ajax } from 'rxjs/ajax';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 interface IApiUser {
   id: number;
   name: string;
@@ -56,7 +63,11 @@ interface ITransformedUser {
 }
 @Component({
   selector: 'app-rxjsandobservables',
-  imports: [CommonModule],
+  imports: [CommonModule,MatGridListModule,
+MatCardModule,
+MatDividerModule,
+MatButtonModule,
+MatInputModule],
   templateUrl: './rxjsandobservables.html',
   styleUrl: './rxjsandobservables.scss',
 })
@@ -66,6 +77,7 @@ export class Rxjsandobservables implements OnInit, OnDestroy {
   private readonly apiUrl: string = 'https://api.tvmaze.com/search/shows?q=';
   private readonly apiUrlforcat: string = 'https://api.artic.edu/api/v1/artworks/search?q=';
   http = inject(HttpClient);
+  apiService = inject(RxjsandobservablesService);
   helloWorld: any = [];
   myObservable = new Observable((observer) => {
     observer.next('Hello');
@@ -101,6 +113,10 @@ export class Rxjsandobservables implements OnInit, OnDestroy {
   result$!: Observable<any>;
   private destroy$ = new Subject<void>();
 
+
+  // using mergemap
+
+  private userIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   ngOnInit() {
     fromEvent(this.showsInput.nativeElement, 'input')
       .pipe(
@@ -328,5 +344,40 @@ export class Rxjsandobservables implements OnInit, OnDestroy {
 
   private getUserByIds(id: number) {
     return this.http.get<IApiUser>(`https://jsonplaceholder.typicode.com/users/${id}`);
+  }
+
+   private reset() {
+    this.apiService.logs = [];
+  }
+  public loadWithMergeMap(){
+    this.reset();
+    this.apiService.log('mergeMap STARTED');
+    from(this.userIds).pipe(mergeMap(userId=>this.apiService.getPostFromUsers(userId))).subscribe({
+      // console.log(res)
+      complete: () =>  this.apiService.log('mergeMap COMPLETED')
+    })
+  }
+
+  public loadWithSwithMap(){
+    this.reset()
+    this.apiService.log('switchMap STARTED')
+    from(this.userIds).pipe(switchMap(userId=>this.apiService.getPostFromUsers(userId))).subscribe({
+      complete:()=>this.apiService.log('switchMap completed')
+    })
+  }
+
+  public loadWithconcatMap(){
+    this.reset()
+    this.apiService.log('concatMAP STARTTED')
+    from(this.userIds).pipe(concatMap(userId=>this.apiService.getPostFromUsers(userId))).subscribe({
+      complete:()=>this.apiService.log('concatMAP completed')
+    })
+  }
+  loadWithexhaustMap(){
+    this.reset()
+    this.apiService.log('exhaustMap STARTTED')
+    from(this.userIds).pipe(exhaustMap(userId=>this.apiService.getPostFromUsers(userId))).subscribe({
+      complete:()=>this.apiService.log('exhaustMap completed')
+    })
   }
 }
