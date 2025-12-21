@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, Injectable, signal } from '@angular/core';
+import { Observable } from 'rxjs';
 interface Todo {
   id: number;
   title: string;
@@ -26,6 +27,9 @@ export class Signalservice {
 
   increment() {
     this.count.update((count) => count + 1);
+  }
+  getTodos(): Observable<Todo[]> {
+    return this.http.get<Todo[]>('https://jsonplaceholder.typicode.com/todos');
   }
 
   decrement() {

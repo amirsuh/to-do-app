@@ -1,6 +1,17 @@
 <mat-card>
-  <mat-card-title>Item Manager (UI Mockup)</mat-card-title>
+  <!-- <mat-card-title>Item Manager (UI Mockup)</mat-card-title> -->
 
+<h3>tepm converter</h3>
+<label for="">
+  Celsius:
+  <input type="number" [value]="celsius()" (input)="updateTemp($event)">
+</label>
+
+<p> fahrenheit : {{fahrenheit()}}</p>
+<hr>
+<button (click)="increase()">increase</button>
+<button (click)="decrese()">decrese</button>
+<button (click)="reset()">reset</button>
 
   <mat-card>
     <mat-card-title>Users</mat-card-title>
@@ -53,7 +64,20 @@
 
 </mat-card>
 
-  <!-- Footer: total quantity -->
+<!--
+<div *ngIf="loading$ | async">Loading...</div>
+    <div *ngIf="error$ | async as error">Error: {{ error }}</div>
+    <ul>
+      <li *ngFor="let todo of todos$ | async">
+        {{ todo.title }}
+        <input
+          type="checkbox"
+          [checked]="todo.completed"
+          (change)="toggleTodo(todo.id)"
+        >
+      </li>
+    </ul>
+  Footer: total quantity -->
   <mat-card-footer>
     <strong>Total Quantity: </strong> 20
   </mat-card-footer>
