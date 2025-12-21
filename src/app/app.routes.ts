@@ -4,6 +4,7 @@ import { Pagenotfoundcomponent } from './shared/components/pagenotfoundcomponent
 import { Rxjsandobservables } from './features/rxjsandobservables/rxjsandobservables';
 import { Dashboard } from './features/dashboard/component/dashboard/dashboard';
 import { Statemanagement } from './features/statemanagement/statemanagement';
+import { MaterilaDesigns } from './shared/components/materila-designs/materila-designs';
 
 export const routes: Routes = [
   // Default redirect from '' to HOME
@@ -17,6 +18,8 @@ export const routes: Routes = [
 
   // StaetManagement route
   { path: ROUTE_CONSTANTS.STATEMANAGEMNETANDNGRS, component: Statemanagement },
+
+  { path: ROUTE_CONSTANTS.ANGULARMATERIAL, component: MaterilaDesigns },
 
   // Wildcard route for 404 page
   { path: '**', component: Pagenotfoundcomponent }

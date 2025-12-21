@@ -217,3 +217,60 @@
     </ul>
   </mat-card-content>
 </mat-card>
+<input type="text" [formControl]="searchControl" placeholder="Search users..." />
+
+<button (click)="save()">Save</button>
+    <div *ngIf="message">{{count}}number time {{ message }}</div>
+<div *ngIf="this.apiService.getUserData()  | async as user">
+  <!-- {{user | json}} -->
+
+  <ul>
+    @for(use of user;track use.id ){
+    <li>
+     {{use.name}} -- {{use.email}}
+    </li>
+    }
+
+  </ul>
+</div>
+@defer (when users$ | async) {
+
+  <mat-card>
+    <mat-card-title>Users</mat-card-title>
+
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
+
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let user">{{ user.id }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let user">{{ user.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row;
+    columns: displayedColumns;
+    trackBy: trackById">
+      </tr>
+
+    </table>
+  </mat-card>
+
+} @placeholder {
+
+  <mat-card>
+    <mat-card-title>Loading users...</mat-card-title>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </mat-card>
+
+}

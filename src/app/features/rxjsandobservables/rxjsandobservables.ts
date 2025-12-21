@@ -7,7 +7,7 @@ import {
   viewChild,
   ViewChild,
 } from '@angular/core';
-import { RxjsandobservablesService } from './service/rxjsandobservables';
+import { RxjsandobservablesService, User } from './service/rxjsandobservables';
 import { HttpClient } from '@angular/common/http';
 import {
   combineLatest,
@@ -15,6 +15,7 @@ import {
   concatMap,
   debounceTime,
   delay,
+  distinctUntilChanged,
   exhaustMap,
   filter,
   from,
@@ -26,12 +27,14 @@ import {
   Observable,
   of,
   retry,
+  shareReplay,
   skip,
   Subject,
   switchMap,
   take,
   takeUntil,
   tap,
+  throttleTime,
   timer,
 } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -41,6 +44,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatTable, MatTableModule } from "@angular/material/table";
+import { MatProgressBar } from "@angular/material/progress-bar";
 interface IApiUser {
   id: number;
   name: string;
@@ -69,8 +75,10 @@ interface ITransformedUser {
     MatCardModule,
     MatDividerModule,
     MatButtonModule,
-    MatInputModule,
-  ],
+    MatInputModule, ReactiveFormsModule,
+    MatTable,
+    MatProgressBar,MatTableModule
+],
   templateUrl: './rxjsandobservables.html',
   styleUrl: './rxjsandobservables.scss',
 })
@@ -123,6 +131,13 @@ export class Rxjsandobservables implements OnInit, OnDestroy {
   file!:any
   uploadStatus: string | null = null;
 
+  searchControl = new FormControl('')
+  displayedColumns = ['id', 'name', 'email'];
+
+  users$= this.apiService.getUsers().pipe(
+    shareReplay({ bufferSize: 1, refCount: true })
+  );
+  dataSource = new UsersDataSource(this.users$);
   constructor() {
     this.apiService.subject.subscribe((res) => console.log(res));
     this.apiService.newSubject.subscribe((res) => console.log(res));
@@ -131,6 +146,7 @@ export class Rxjsandobservables implements OnInit, OnDestroy {
     this.apiService.messages$.subscribe((message) => {
       this.messages.push(message);
     });
+    this.searchControl.valueChanges.pipe(debounceTime(500),distinctUntilChanged(),throttleTime(2000)).subscribe(res=>console.log(res))
   }
   ngOnInit() {
     setTimeout(() => {
@@ -259,6 +275,7 @@ export class Rxjsandobservables implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
+  trackById = (_: number, user: any) => user.id;
   merged() {
     // const stop$ = timer(3000)
     // const source$ = interval(500);
@@ -424,5 +441,33 @@ export class Rxjsandobservables implements OnInit, OnDestroy {
     this.apiService.uploadFile(this.file).subscribe(result => {
   this.uploadStatus = result; // Gets called only once with final message
 });
+  }
+
+  message: string | null = null;
+  count=0
+  save() {
+    of('Data saved successfully!')
+      .pipe(delay(2000)) // Wait 2 seconds
+      .subscribe(msg => {
+        this.count++
+        this.message = msg;
+      });
+  }
+}
+
+
+import { DataSource } from '@angular/cdk/collections';
+
+export class UsersDataSource extends DataSource<User> {
+  constructor(private users$: Observable<User[]>) {
+    super();
+  }
+
+  connect(): Observable<User[]> {
+    return this.users$;
+  }
+
+  disconnect(): void {
+    // cleanup if needed
   }
 }

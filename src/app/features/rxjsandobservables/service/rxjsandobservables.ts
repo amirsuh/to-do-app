@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { AsyncSubject, BehaviorSubject, catchError, forkJoin, Observable, of, ReplaySubject, share, Subject, tap } from 'rxjs';
+import { AsyncSubject, BehaviorSubject, catchError, delay, forkJoin, Observable, of, ReplaySubject, share, Subject, tap } from 'rxjs';
 interface IUser {
   id: number;
   name: string;
@@ -20,6 +20,11 @@ interface IComment {
   name: string;
   email: string;
   body: string;
+}
+export interface User {
+  id: number;
+  name: string;
+  email: string;
 }
 @Injectable({
   providedIn: 'root',
@@ -74,7 +79,13 @@ export class RxjsandobservablesService {
     }
     return this.user$;
   }
-
+getUsers(): Observable<User[]> {
+    return of([
+      { id: 1, name: 'Alice', email: 'alice@mail.com' },
+      { id: 2, name: 'Bob', email: 'bob@mail.com' },
+      { id: 3, name: 'Charlie', email: 'charlie@mail.com' }
+    ]).pipe(delay(2000)); // simulate API latency
+  }
   sendMessage(msg: string) {
     this.messageSubject.next(msg);
   }
