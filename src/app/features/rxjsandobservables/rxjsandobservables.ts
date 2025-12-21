@@ -63,11 +63,14 @@ interface ITransformedUser {
 }
 @Component({
   selector: 'app-rxjsandobservables',
-  imports: [CommonModule,MatGridListModule,
-MatCardModule,
-MatDividerModule,
-MatButtonModule,
-MatInputModule],
+  imports: [
+    CommonModule,
+    MatGridListModule,
+    MatCardModule,
+    MatDividerModule,
+    MatButtonModule,
+    MatInputModule,
+  ],
   templateUrl: './rxjsandobservables.html',
   styleUrl: './rxjsandobservables.scss',
 })
@@ -113,11 +116,29 @@ export class Rxjsandobservables implements OnInit, OnDestroy {
   result$!: Observable<any>;
   private destroy$ = new Subject<void>();
 
-
   // using mergemap
 
   private userIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  messages: string[] = [];
+  file!:any
+  uploadStatus: string | null = null;
+
+  constructor() {
+    this.apiService.subject.subscribe((res) => console.log(res));
+    this.apiService.newSubject.subscribe((res) => console.log(res));
+    this.apiService.neBehSubject.subscribe((res) => console.log(res));
+    this.apiService.behaviorSubject.subscribe((res) => console.log(res));
+    this.apiService.messages$.subscribe((message) => {
+      this.messages.push(message);
+    });
+  }
   ngOnInit() {
+    setTimeout(() => {
+      this.apiService.subject.next('hello');
+      this.apiService.newSubject.next(1);
+      this.apiService.behaviorSubject.next('this is 2nd value');
+      this.apiService.neBehSubject.next(2);
+    }, 10000);
     fromEvent(this.showsInput.nativeElement, 'input')
       .pipe(
         debounceTime(500),
@@ -312,7 +333,6 @@ export class Rxjsandobservables implements OnInit, OnDestroy {
     );
   }
 
-
   public userData$: Observable<IApiUser> = this.getUserById(1);
 
   private getUserById(id: number): Observable<IApiUser> {
@@ -323,61 +343,86 @@ export class Rxjsandobservables implements OnInit, OnDestroy {
       address: {
         street: '123 Main St',
         city: 'Springfield',
-        zipcode: '12345'
+        zipcode: '12345',
       },
       company: {
-        name: 'Acme Corp'
-      }
+        name: 'Acme Corp',
+      },
     };
 
     return of(mockUser).pipe(delay(1000));
   }
 
-    public userDatas$: Observable<ITransformedUser> = this.getUserByIds(1).pipe(map((apiUser: IApiUser) => {
-    return {
-      userId: apiUser.id,
-      userBio: `${apiUser.name} (${apiUser.email})`,
-      location: `${apiUser.address?.city}, ${apiUser.address?.zipcode}`,
-      employment: apiUser.company?.name
-    }
-  }))
+  public userDatas$: Observable<ITransformedUser> = this.getUserByIds(1).pipe(
+    map((apiUser: IApiUser) => {
+      return {
+        userId: apiUser.id,
+        userBio: `${apiUser.name} (${apiUser.email})`,
+        location: `${apiUser.address?.city}, ${apiUser.address?.zipcode}`,
+        employment: apiUser.company?.name,
+      };
+    })
+  );
 
   private getUserByIds(id: number) {
     return this.http.get<IApiUser>(`https://jsonplaceholder.typicode.com/users/${id}`);
   }
 
-   private reset() {
+  private reset() {
     this.apiService.logs = [];
   }
-  public loadWithMergeMap(){
+  public loadWithMergeMap() {
     this.reset();
     this.apiService.log('mergeMap STARTED');
-    from(this.userIds).pipe(mergeMap(userId=>this.apiService.getPostFromUsers(userId))).subscribe({
-      // console.log(res)
-      complete: () =>  this.apiService.log('mergeMap COMPLETED')
-    })
+    from(this.userIds)
+      .pipe(mergeMap((userId) => this.apiService.getPostFromUsers(userId)))
+      .subscribe({
+        // console.log(res)
+        complete: () => this.apiService.log('mergeMap COMPLETED'),
+      });
   }
 
-  public loadWithSwithMap(){
-    this.reset()
-    this.apiService.log('switchMap STARTED')
-    from(this.userIds).pipe(switchMap(userId=>this.apiService.getPostFromUsers(userId))).subscribe({
-      complete:()=>this.apiService.log('switchMap completed')
-    })
+  public loadWithSwithMap() {
+    this.reset();
+    this.apiService.log('switchMap STARTED');
+    from(this.userIds)
+      .pipe(switchMap((userId) => this.apiService.getPostFromUsers(userId)))
+      .subscribe({
+        complete: () => this.apiService.log('switchMap completed'),
+      });
   }
 
-  public loadWithconcatMap(){
-    this.reset()
-    this.apiService.log('concatMAP STARTTED')
-    from(this.userIds).pipe(concatMap(userId=>this.apiService.getPostFromUsers(userId))).subscribe({
-      complete:()=>this.apiService.log('concatMAP completed')
-    })
+  public loadWithconcatMap() {
+    this.reset();
+    this.apiService.log('concatMAP STARTTED');
+    from(this.userIds)
+      .pipe(concatMap((userId) => this.apiService.getPostFromUsers(userId)))
+      .subscribe({
+        complete: () => this.apiService.log('concatMAP completed'),
+      });
   }
-  loadWithexhaustMap(){
-    this.reset()
-    this.apiService.log('exhaustMap STARTTED')
-    from(this.userIds).pipe(exhaustMap(userId=>this.apiService.getPostFromUsers(userId))).subscribe({
-      complete:()=>this.apiService.log('exhaustMap completed')
-    })
+  loadWithexhaustMap() {
+    this.reset();
+    this.apiService.log('exhaustMap STARTTED');
+    from(this.userIds)
+      .pipe(exhaustMap((userId) => this.apiService.getPostFromUsers(userId)))
+      .subscribe({
+        complete: () => this.apiService.log('exhaustMap completed'),
+      });
+  }
+  sendMessage(message:string){
+    this.apiService.sendMessage(message)
+    this.showsInputText.nativeElement.value=''
+  }
+
+  onFileSelected(event: Event) {
+  const input = event.target as HTMLInputElement;
+  this.file = input.files?.[0] ?? null;
+}
+
+  uploadFile(){
+    this.apiService.uploadFile(this.file).subscribe(result => {
+  this.uploadStatus = result; // Gets called only once with final message
+});
   }
 }

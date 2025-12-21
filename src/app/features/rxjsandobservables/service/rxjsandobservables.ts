@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { catchError, forkJoin, Observable, of, share, tap } from 'rxjs';
+import { AsyncSubject, BehaviorSubject, catchError, forkJoin, Observable, of, ReplaySubject, share, Subject, tap } from 'rxjs';
 interface IUser {
   id: number;
   name: string;
@@ -30,6 +30,13 @@ export class RxjsandobservablesService {
   private apiUrlPlaceholder = 'https://jsonplaceholder.typicode.com';
   logs: string[] = [];
   private user$!: Observable<any>;
+  subject = new Subject<string>();
+  newSubject = new Subject<number>()
+   behaviorSubject = new BehaviorSubject<string>('Initial Value');
+   neBehSubject = new BehaviorSubject<number>(1)
+   private messageSubject = new ReplaySubject<string>(5); // Last 5 messages
+  messages$ = this.messageSubject.asObservable();
+
   getPostFromUsers(userId: number) {
     return this.http
       .get(`${this.apiUrlPlaceholder}/posts?userId=${userId}`)
@@ -67,4 +74,21 @@ export class RxjsandobservablesService {
     }
     return this.user$;
   }
+
+  sendMessage(msg: string) {
+    this.messageSubject.next(msg);
+  }
+
+  uploadFile(file: File): Observable<string> {
+    const resultSubject = new AsyncSubject<string>();
+
+    // Simulate API call
+    setTimeout(() => {
+      resultSubject.next('File uploaded successfully!');
+      resultSubject.complete();
+    }, 2000);
+
+    return resultSubject.asObservable();
+  }
+
 }

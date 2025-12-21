@@ -14,12 +14,36 @@
         <mat-form-field appearance="outline" class="full-width" style="margin-top: 20px;">
           <mat-label>Shows Input Text</mat-label>
           <input matInput #showsInputText />
+
         </mat-form-field>
       </mat-grid-tile>
     </mat-grid-list>
   </mat-card-content>
 </mat-card>
+         <button (click)="sendMessage(showsInputText.value)">message</button>
+<mat-card class="mt-16">
+  <mat-card-title>Repalsubject$ Values</mat-card-title>
+  <mat-card-content>
+    <ul>
+      @for (tmft of messages; track tmft) {
+        <li>{{ tmft }}</li>
+      }
+    </ul>
+  </mat-card-content>
+</mat-card>
 
+<mat-card>
+  <mat-card-title>file upload</mat-card-title>
+  <mat-card-content>
+
+<input type="file" (change)="onFileSelected($event)">
+<button (click)="uploadFile()" [disabled]="!file">upload</button>
+<div *ngIf="uploadStatus as s">
+  <span>{{s}}</span>
+</div>
+
+  </mat-card-content>
+</mat-card>
 <!-- STREAM RESULTS -->
 <mat-grid-list cols="2" rowHeight="fit" gutterSize="16px">
 
