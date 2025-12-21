@@ -2,50 +2,56 @@
   <mat-card-title>Item Manager (UI Mockup)</mat-card-title>
 
 
-<mat-form-field style="width:auto">
+  <mat-card>
+    <mat-card-title>Users</mat-card-title>
   <div *ngIf="user$ | async as user">
       <h2>Welcome, {{ user.name }}!</h2>
       <p>Email: {{ user.email }}</p>
     </div>
     <button (click)="setNewUser()">change</button>
-</mat-form-field>
+</mat-card>
 
 
-  <!-- Item Table -->
-  <table mat-table class="mat-elevation-z2">
+<mat-card>
+  <div>
+    <mat-card-title>Username</mat-card-title>
 
-    <!-- ID Column -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef>ID</th>
-      <td mat-cell *matCellDef="let item">1</td>
-    </ng-container>
+      <h3>Double Count: {{ signalService.doublecount() }}</h3>
+      <button (click)="signalService.increment()">Increment</button>
+      <h2>Counter: {{ signalService.getCount()() }}</h2>
+      <button (click)="signalService.decrement()">Decrement</button>
+    </div>
+</mat-card>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef>Name</th>
-      <td mat-cell *matCellDef="let item">Sample Item</td>
-    </ng-container>
 
-    <!-- Quantity Column -->
-    <ng-container matColumnDef="quantity">
-      <th mat-header-cell *matHeaderCellDef>Quantity</th>
-      <td mat-cell *matCellDef="let item">5</td>
-    </ng-container>
+<mat-card>
+  <mat-card-title>Username</mat-card-title>
+  <div *ngIf="signalService.loading()">Loading...</div>
 
-    <!-- Actions Column -->
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef>Actions</th>
-      <td mat-cell *matCellDef="let item">
-        <button mat-button color="warn">Remove</button>
-      </td>
-    </ng-container>
+<h3>Pending Todos</h3>
+<ul>
+  <!-- @for(todo of signalService.pendingTodos();track todo.id){} -->
+  <li *ngFor="let todo of signalService.pendingTodos()">
+    {{ todo.title }}
+    <button (click)="toggleTodo(todo.id)">✔</button>
+  </li>
+</ul>
 
-    <!-- Header and Row Definitions -->
-    <tr mat-header-row *matHeaderRowDef="['id','name','quantity','actions']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['id','name','quantity','actions']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['id','name','quantity','actions']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['id','name','quantity','actions']"></tr>
-  </table>
+<h3>Completed Todos</h3>
+<ul>
+  <li *ngFor="let todo of signalService.completedTodos()">
+    {{todo| json}}
+    {{ todo.title }}
+    <button (click)="toggleTodo(todo.id)">↩</button>
+  </li>
+</ul>
+
+<input #newTodoInput placeholder="New todo" />
+<button (click)="addTodo(newTodoInput.value); newTodoInput.value=''">
+  Add
+</button>
+
+</mat-card>
 
   <!-- Footer: total quantity -->
   <mat-card-footer>
