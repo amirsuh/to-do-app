@@ -1,123 +1,276 @@
-<input type="text" #showsInput/>
-<input type="text" #showsInputText/>
+<!-- INPUT SECTION -->
+<mat-card class="mb-16" >
+  <mat-card-title>Inputs</mat-card-title>
+  <mat-card-content style="margin-top: 20px;">
+    <mat-grid-list cols="2" rowHeight="70px" gutterSize="16px">
+      <mat-grid-tile>
+        <mat-form-field appearance="outline" class="full-width" style="margin-top: 20px;">
+          <mat-label>Shows Input</mat-label>
+          <input matInput #showsInput />
+        </mat-form-field>
+      </mat-grid-tile>
 
-<!-- @for(tmft of tapMapFilterTap;track tmft){
-<p>
-  {{tmft}}
-</p>
-}
-@for(tmft of helloWorld;track tmft){
-<p>
-  {{tmft}}
-</p>
-}
-@for(tmft of concatenatedData;track tmft){
-<p>
-  {{tmft}}
-</p>
-}
-@for(tmft of diableRes;track tmft){
-<p>
-  {{tmft}}
-</p>
-} -->
-<div>
-  <h3>merge</h3>
-  <p>{{merged$ | async | json}}</p>
+      <mat-grid-tile>
+        <mat-form-field appearance="outline" class="full-width" style="margin-top: 20px;">
+          <mat-label>Shows Input Text</mat-label>
+          <input matInput #showsInputText />
+
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-card-content>
+</mat-card>
+         <button (click)="sendMessage(showsInputText.value)">message</button>
+<mat-card class="mt-16">
+  <mat-card-title>Repalsubject$ Values</mat-card-title>
+  <mat-card-content>
+    <ul>
+      @for (tmft of messages; track tmft) {
+        <li>{{ tmft }}</li>
+      }
+    </ul>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-title>file upload</mat-card-title>
+  <mat-card-content>
+
+<input type="file" (change)="onFileSelected($event)">
+<button (click)="uploadFile()" [disabled]="!file">upload</button>
+<div *ngIf="uploadStatus as s">
+  <span>{{s}}</span>
 </div>
-<!-- <div>
-  <h3>Merged Streams</h3>
+
+  </mat-card-content>
+</mat-card>
+<!-- STREAM RESULTS -->
+<mat-grid-list cols="2" rowHeight="fit" gutterSize="16px">
+
+  <!-- <mat-grid-tile> -->
+    <mat-card>
+      <mat-card-title>Merge</mat-card-title>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        <pre>{{ merged$ | async | json }}</pre>
+      </mat-card-content>
+    </mat-card>
+  <!-- </mat-grid-tile> -->
+  <!-- <mat-grid-tile> -->
+    <mat-card>
+      <mat-card-title>Hello World</mat-card-title>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        {{ helloWorld }}
+      </mat-card-content>
+    </mat-card>
+  <!-- </mat-grid-tile> -->
+
+  <mat-grid-tile>
+    <mat-card>
+      <mat-card-title>Doubled (tap + map + filter)</mat-card-title>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        {{ tapMapFilterTap }}
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+
+  <!-- <mat-grid-tile> -->
+    <mat-card>
+      <mat-card-title>Diuble$ (map + filter)</mat-card-title>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        {{ diableRes }}
+      </mat-card-content>
+    </mat-card>
+  <!-- </mat-grid-tile> -->
+
+  <!-- <mat-grid-tile> -->
+    <mat-card>
+      <mat-card-title>Concatenated Data</mat-card-title>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        {{ concatenatedData }}
+      </mat-card-content>
+    </mat-card>
+  <!-- </mat-grid-tile> -->
+
+  <mat-grid-tile>
+    <mat-card>
+      <mat-card-title>Doubleds$ (async)</mat-card-title>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        {{ doubleds$ | async }}
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+
+</mat-grid-list>
+
+<!-- LIST SECTION -->
+<mat-card class="mt-16">
+  <mat-card-title>Source$ Values</mat-card-title>
+  <mat-card-content>
+    <ul>
+      @for (tmft of diableRes; track tmft) {
+        <li>{{ tmft }}</li>
+      }
+    </ul>
+  </mat-card-content>
+</mat-card>
+
+<!-- COMBINE LATEST -->
+<mat-card class="mt-16">
+  <mat-card-title>Combined Results</mat-card-title>
+  <mat-card-content>
+    <p>Latest value: {{ result$ | async }}</p>
+    <p>{{ combineLates() | async }}</p>
+  </mat-card-content>
+</mat-card>
+
+<!-- USER PROFILE -->
+<mat-card *ngIf="userData$ | async as user; else loading" class="mt-16">
+  <mat-card-title>User Profile</mat-card-title>
+  <mat-card-content>
+    <p><strong>Name:</strong> {{ user.name }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #loading>
+  <mat-card class="mt-16">
+    <mat-card-content>Loading user data...</mat-card-content>
+  </mat-card>
+</ng-template>
+
+<!-- DEFERRED CARD -->
+@defer (on interaction(trigger)) {
+  <mat-card class="mt-16">
+    <mat-card-title>Deferred User Data</mat-card-title>
+    <mat-card-content *ngIf="userDatas$ | async as user">
+      <p>{{ user.userBio }}</p>
+      <p><strong>Location:</strong> {{ user.location }}</p>
+      <p><strong>Employment:</strong> {{ user.employment }}</p>
+    </mat-card-content>
+  </mat-card>
+}
+@placeholder {
+  <mat-card class="mt-16">
+    <mat-card-content>Placeholder</mat-card-content>
+  </mat-card>
+}
+
+<button mat-raised-button color="primary" #trigger class="mt-16">
+  Trigger
+</button>
+
+
+@defer (on hover(trigger)) {
+      Main content
+    } @placeholder {
+      Placeholder
+    }
+
+    <button #trigger>Trigger</button>
+
+<button (click)="loadWithMergeMap()">Use mergeMap</button>
+<button (click)="loadWithSwithMap()">Use SwithMap</button>
+<button (click)="loadWithconcatMap()">Use concatMap</button>
+<button (click)="loadWithexhaustMap()">Use exhaustMap</button>
+<div *ngFor="let log of apiService.logs">{{ log }}</div>
+
+
+<mat-card *ngIf="apiService.data$ | async as user; else loading" class="mt-16">
+  <mat-card-title>User Profile</mat-card-title>
+  <mat-card-content>
+
+
+    <p><strong>Name:</strong> {{ user.user.name }}</p>
+    <p><strong>Email:</strong> {{ user.user.email }}</p>
+    <h2>Posts</h2>
+    <ul>
+        <li *ngFor="let post of user?.posts">{{ post.title }}</li>
+    </ul>
+    <h2>comments</h2>
+     <ul>
+        <li *ngFor="let post of user?.comments">{{ post.body }}</li>
+    </ul>
+  </mat-card-content>
+</mat-card>
+
+
+<mat-card *ngIf="apiService.data1$ | async as user; else loading" class="mt-16">
+  <mat-card-title>User Profile</mat-card-title>
+  <mat-card-content>
+
+
+    <p><strong>Name:</strong> {{ user.user?.name }}</p>
+    <p><strong>Email:</strong> {{ user.user?.email }}</p>
+    <h2>Posts</h2>
+    <ul>
+        <li *ngFor="let post of user?.posts">{{ post.title }}</li>
+    </ul>
+    <h2>comments</h2>
+     <ul>
+        <li *ngFor="let post of user?.comments">{{ post.body }}</li>
+    </ul>
+  </mat-card-content>
+</mat-card>
+<input type="text" [formControl]="searchControl" placeholder="Search users..." />
+
+<button (click)="save()">Save</button>
+    <div *ngIf="message">{{count}}number time {{ message }}</div>
+<div *ngIf="this.apiService.getUserData()  | async as user">
+  <!-- {{user | json}} -->
+
   <ul>
-    <li *ngFor="let item of merged$ | async">
-      {{ item.stream }} → {{ item.value }}
+    @for(use of user;track use.id ){
+    <li>
+     {{use.name}} -- {{use.email}}
     </li>
-  </ul>
-</div> -->
-
-<div>
-  <!-- myObservable -->
-  <h3>My Observable (Hello World)</h3>
-  <p>{{ helloWorld }}</p>
-</div>
-
-<div>
-  <!-- doubled with tap + filter -->
-  <h3>Doubled (tap + map + filter)</h3>
-  <p>{{ tapMapFilterTap }}</p>
-</div>
-
-<div>
-  <!-- diuble$ (map + filter operators stored in variables) -->
-  <h3>Diuble$ (map + filter)</h3>
-  <p>{{ diableRes }}</p>
-</div>
-
-<div>
-  <!-- concatenated (concat source1 + source2) -->
-  <h3>Concatenated Data</h3>
-  <p>{{ concatenatedData }}</p>
-</div>
-
-<div>
-  <!-- doubleds$ (map + tap operators stored in variables) -->
-  <h3>Doubleds$ (map + tap)</h3>
-  <p>{{ doubleds$ | async }}</p>
-</div>
-
-<hr />
-
-<!-- If you want to show arrays as lists -->
-<div>
-  <h3>Source$ (async pipe)</h3>
-  <ul>
-    @for(tmft of diableRes;track tmft){
-    <li >{{ tmft }}</li>
     }
-  </ul>
-</div>
 
-<div>
-  <h3>Sources$ with doubleds$</h3>
-  <ul>
-    @for(tmft of diableRes;track tmft){
-    <li >{{ tmft }}</li>
-    }
   </ul>
 </div>
-<p>Latest value: {{ result$ | async }}</p>
-<p>{{combineLates() | async}}</p>
-@if (userData$ | async; as user) {
-  <h2>User Profile</h2>
-  <div>Name: {{ user.name }}</div>
-  <div>Email: {{ user.email }}</div>
-} @else {
-  <div class="loading">Loading user data...</div>
+@defer (when users$ | async) {
+
+  <mat-card>
+    <mat-card-title>Users</mat-card-title>
+
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
+
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let user">{{ user.id }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let user">{{ user.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row;
+    columns: displayedColumns;
+    trackBy: trackById">
+      </tr>
+
+    </table>
+  </mat-card>
+
+} @placeholder {
+
+  <mat-card>
+    <mat-card-title>Loading users...</mat-card-title>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </mat-card>
+
 }
-
-
-<div *ngIf="userData$ | async as user; else loading">
-    <h2>User Profile</h2>
-    <div>Name: {{ user.name }}</div>
-    <div>Email: {{ user.email }}</div>
-</div>
-
-<ng-template #loading>
-    <div class="loading">Loading user data...</div>
-</ng-template>
-
-
-<div class="card" *ngIf="userDatas$ | async as user; else loading">
-    <h2>User Profile</h2>
-    <div class="bio">{{ user.userBio }}</div>
-    <div class="details">
-        <p><strong>Location:</strong> {{ user.location }}</p>
-        <p><strong>Employment:</strong> {{ user.employment }}</p>
-    </div>
-</div>
-
-<ng-template #loading>
-    <div class="loading">Loading user data...</div>
-</ng-template>
-<!-- <input id="input" type="text" placeholder="Type something..." />
-
-<p>Debounced value: {{ keyUp() | async }}</p> -->

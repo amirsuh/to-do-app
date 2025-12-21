@@ -7,7 +7,7 @@ import {
   viewChild,
   ViewChild,
 } from '@angular/core';
-import { RxjsandobservablesService } from './service/rxjsandobservables';
+import { RxjsandobservablesService, User } from './service/rxjsandobservables';
 import { HttpClient } from '@angular/common/http';
 import {
   combineLatest,
@@ -15,25 +15,38 @@ import {
   concatMap,
   debounceTime,
   delay,
+  distinctUntilChanged,
+  exhaustMap,
   filter,
   from,
   fromEvent,
   interval,
   map,
   merge,
+  mergeMap,
   Observable,
   of,
   retry,
+  shareReplay,
   skip,
   Subject,
   switchMap,
   take,
   takeUntil,
   tap,
+  throttleTime,
   timer,
 } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ajax } from 'rxjs/ajax';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatTable, MatTableModule } from "@angular/material/table";
+import { MatProgressBar } from "@angular/material/progress-bar";
 interface IApiUser {
   id: number;
   name: string;
@@ -56,7 +69,16 @@ interface ITransformedUser {
 }
 @Component({
   selector: 'app-rxjsandobservables',
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    MatGridListModule,
+    MatCardModule,
+    MatDividerModule,
+    MatButtonModule,
+    MatInputModule, ReactiveFormsModule,
+    MatTable,
+    MatProgressBar,MatTableModule
+],
   templateUrl: './rxjsandobservables.html',
   styleUrl: './rxjsandobservables.scss',
 })
@@ -66,6 +88,7 @@ export class Rxjsandobservables implements OnInit, OnDestroy {
   private readonly apiUrl: string = 'https://api.tvmaze.com/search/shows?q=';
   private readonly apiUrlforcat: string = 'https://api.artic.edu/api/v1/artworks/search?q=';
   http = inject(HttpClient);
+  apiService = inject(RxjsandobservablesService);
   helloWorld: any = [];
   myObservable = new Observable((observer) => {
     observer.next('Hello');
@@ -101,7 +124,37 @@ export class Rxjsandobservables implements OnInit, OnDestroy {
   result$!: Observable<any>;
   private destroy$ = new Subject<void>();
 
+  // using mergemap
+
+  private userIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  messages: string[] = [];
+  file!:any
+  uploadStatus: string | null = null;
+
+  searchControl = new FormControl('')
+  displayedColumns = ['id', 'name', 'email'];
+
+  users$= this.apiService.getUsers().pipe(
+    shareReplay({ bufferSize: 1, refCount: true })
+  );
+  dataSource = new UsersDataSource(this.users$);
+  constructor() {
+    this.apiService.subject.subscribe((res) => console.log(res));
+    this.apiService.newSubject.subscribe((res) => console.log(res));
+    this.apiService.neBehSubject.subscribe((res) => console.log(res));
+    this.apiService.behaviorSubject.subscribe((res) => console.log(res));
+    this.apiService.messages$.subscribe((message) => {
+      this.messages.push(message);
+    });
+    this.searchControl.valueChanges.pipe(debounceTime(500),distinctUntilChanged(),throttleTime(2000)).subscribe(res=>console.log(res))
+  }
   ngOnInit() {
+    setTimeout(() => {
+      this.apiService.subject.next('hello');
+      this.apiService.newSubject.next(1);
+      this.apiService.behaviorSubject.next('this is 2nd value');
+      this.apiService.neBehSubject.next(2);
+    }, 10000);
     fromEvent(this.showsInput.nativeElement, 'input')
       .pipe(
         debounceTime(500),
@@ -222,6 +275,7 @@ export class Rxjsandobservables implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
+  trackById = (_: number, user: any) => user.id;
   merged() {
     // const stop$ = timer(3000)
     // const source$ = interval(500);
@@ -296,7 +350,6 @@ export class Rxjsandobservables implements OnInit, OnDestroy {
     );
   }
 
-
   public userData$: Observable<IApiUser> = this.getUserById(1);
 
   private getUserById(id: number): Observable<IApiUser> {
@@ -307,26 +360,114 @@ export class Rxjsandobservables implements OnInit, OnDestroy {
       address: {
         street: '123 Main St',
         city: 'Springfield',
-        zipcode: '12345'
+        zipcode: '12345',
       },
       company: {
-        name: 'Acme Corp'
-      }
+        name: 'Acme Corp',
+      },
     };
 
     return of(mockUser).pipe(delay(1000));
   }
 
-    public userDatas$: Observable<ITransformedUser> = this.getUserByIds(1).pipe(map((apiUser: IApiUser) => {
-    return {
-      userId: apiUser.id,
-      userBio: `${apiUser.name} (${apiUser.email})`,
-      location: `${apiUser.address?.city}, ${apiUser.address?.zipcode}`,
-      employment: apiUser.company?.name
-    }
-  }))
+  public userDatas$: Observable<ITransformedUser> = this.getUserByIds(1).pipe(
+    map((apiUser: IApiUser) => {
+      return {
+        userId: apiUser.id,
+        userBio: `${apiUser.name} (${apiUser.email})`,
+        location: `${apiUser.address?.city}, ${apiUser.address?.zipcode}`,
+        employment: apiUser.company?.name,
+      };
+    })
+  );
 
   private getUserByIds(id: number) {
     return this.http.get<IApiUser>(`https://jsonplaceholder.typicode.com/users/${id}`);
+  }
+
+  private reset() {
+    this.apiService.logs = [];
+  }
+  public loadWithMergeMap() {
+    this.reset();
+    this.apiService.log('mergeMap STARTED');
+    from(this.userIds)
+      .pipe(mergeMap((userId) => this.apiService.getPostFromUsers(userId)))
+      .subscribe({
+        // console.log(res)
+        complete: () => this.apiService.log('mergeMap COMPLETED'),
+      });
+  }
+
+  public loadWithSwithMap() {
+    this.reset();
+    this.apiService.log('switchMap STARTED');
+    from(this.userIds)
+      .pipe(switchMap((userId) => this.apiService.getPostFromUsers(userId)))
+      .subscribe({
+        complete: () => this.apiService.log('switchMap completed'),
+      });
+  }
+
+  public loadWithconcatMap() {
+    this.reset();
+    this.apiService.log('concatMAP STARTTED');
+    from(this.userIds)
+      .pipe(concatMap((userId) => this.apiService.getPostFromUsers(userId)))
+      .subscribe({
+        complete: () => this.apiService.log('concatMAP completed'),
+      });
+  }
+  loadWithexhaustMap() {
+    this.reset();
+    this.apiService.log('exhaustMap STARTTED');
+    from(this.userIds)
+      .pipe(exhaustMap((userId) => this.apiService.getPostFromUsers(userId)))
+      .subscribe({
+        complete: () => this.apiService.log('exhaustMap completed'),
+      });
+  }
+  sendMessage(message:string){
+    this.apiService.sendMessage(message)
+    this.showsInputText.nativeElement.value=''
+  }
+
+  onFileSelected(event: Event) {
+  const input = event.target as HTMLInputElement;
+  this.file = input.files?.[0] ?? null;
+}
+
+  uploadFile(){
+    this.apiService.uploadFile(this.file).subscribe(result => {
+  this.uploadStatus = result; // Gets called only once with final message
+});
+  }
+
+  message: string | null = null;
+  count=0
+  save() {
+    of('Data saved successfully!')
+      .pipe(delay(2000)) // Wait 2 seconds
+      .subscribe(msg => {
+        this.count++
+        this.message = msg;
+      });
+  }
+}
+
+
+import { DataSource } from '@angular/cdk/collections';
+
+export class UsersDataSource extends DataSource<User> {
+  constructor(private users$: Observable<User[]>) {
+    super();
+  }
+
+  connect(): Observable<User[]> {
+    return this.users$;
+  }
+
+  disconnect(): void {
+    // cleanup if needed
   }
 }

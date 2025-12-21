@@ -1,0 +1,139 @@
+<mat-toolbar color="primary">
+  <span>Angular Material Showcase</span>
+  <span class="spacer"></span>
+  <button mat-icon-button matTooltip="Notifications">
+    <mat-icon matBadge="3" matBadgeColor="warn">notifications</mat-icon>
+  </button>
+</mat-toolbar>
+
+<mat-sidenav-container class="container">
+  <mat-sidenav mode="side" opened>
+    <mat-nav-list>
+      <a mat-list-item>Dashboard</a>
+      <a mat-list-item>Components</a>
+      <a mat-list-item>Settings</a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+
+    <!-- GRID -->
+    <div class="grid">
+
+      <!-- CARD -->
+      <mat-card>
+        <mat-card-title>Buttons</mat-card-title>
+        <mat-card-content>
+          <button mat-raised-button color="primary">Primary</button>
+          <button mat-stroked-button color="accent">Accent</button>
+          <button mat-flat-button color="warn">Warn</button>
+          <button mat-icon-button>
+            <mat-icon>favorite</mat-icon>
+          </button>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- FORM -->
+      <mat-card>
+        <mat-card-title>Forms</mat-card-title>
+        <mat-card-content>
+          <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Role</mat-label>
+            <mat-select>
+              <mat-option value="dev">Developer</mat-option>
+              <mat-option value="designer">Designer</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-checkbox>Accept terms</mat-checkbox>
+          <mat-slide-toggle>Enable</mat-slide-toggle>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- TABS -->
+      <mat-card>
+        <mat-card-title>Tabs</mat-card-title>
+        <mat-tab-group>
+          <mat-tab label="Info">Information</mat-tab>
+          <mat-tab label="Stats">Statistics</mat-tab>
+          <mat-tab label="Settings">Settings</mat-tab>
+        </mat-tab-group>
+      </mat-card>
+
+      <!-- LIST + CHIPS -->
+      <mat-card>
+        <mat-card-title>Lists & Chips</mat-card-title>
+        <mat-list>
+          <mat-list-item>
+            <mat-icon matListIcon>person</mat-icon>
+            John Doe
+          </mat-list-item>
+          <mat-list-item>
+            <mat-icon matListIcon>email</mat-icon>
+            john@email.com
+          </mat-list-item>
+        </mat-list>
+
+        <mat-chip-listbox>
+          <mat-chip color="primary" selected>Angular</mat-chip>
+          <mat-chip color="accent" selected>Material</mat-chip>
+          <mat-chip>RxJS</mat-chip>
+        </mat-chip-listbox>
+      </mat-card>
+
+      <!-- TABLE -->
+      <mat-card>
+        <mat-card-title>Table</mat-card-title>
+        <table mat-table [dataSource]="data">
+
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let el">{{ el.name }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef>Role</th>
+            <td mat-cell *matCellDef="let el">{{ el.role }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columns"></tr>
+          <tr mat-row *matRowDef="let row; columns: columns"></tr>
+        </table>
+      </mat-card>
+
+      <!-- EXPANSION -->
+      <mat-card>
+        <mat-card-title>Expansion</mat-card-title>
+        <mat-accordion>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              Details
+            </mat-expansion-panel-header>
+            Hidden content revealed
+          </mat-expansion-panel>
+        </mat-accordion>
+      </mat-card>
+
+      <!-- PROGRESS -->
+      <mat-card>
+        <mat-card-title>Progress</mat-card-title>
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        <br />
+        <mat-progress-spinner diameter="40" mode="indeterminate"></mat-progress-spinner>
+      </mat-card>
+
+    </div>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>
+<mat-form-field style="width:auto">
+  <div *ngIf="user$ | async as user">
+      <h2>Welcome, {{ user.name }}!</h2>
+      <p>Email: {{ user.email }}</p>
+    </div>
+</mat-form-field>

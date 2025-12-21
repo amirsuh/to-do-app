@@ -3,6 +3,8 @@ import { ROUTE_CONSTANTS } from './core/constants/route-constants';
 import { Pagenotfoundcomponent } from './shared/components/pagenotfoundcomponent/pagenotfoundcomponent';
 import { Rxjsandobservables } from './features/rxjsandobservables/rxjsandobservables';
 import { Dashboard } from './features/dashboard/component/dashboard/dashboard';
+import { Statemanagement } from './features/statemanagement/statemanagement';
+import { MaterilaDesigns } from './shared/components/materila-designs/materila-designs';
 
 export const routes: Routes = [
   // Default redirect from '' to HOME
@@ -13,6 +15,11 @@ export const routes: Routes = [
 
   // RxJS and Observables route
   { path: ROUTE_CONSTANTS.RXJSANDOBSERVABLES, component: Rxjsandobservables },
+
+  // StaetManagement route
+  { path: ROUTE_CONSTANTS.STATEMANAGEMNETANDNGRS, component: Statemanagement },
+
+  { path: ROUTE_CONSTANTS.ANGULARMATERIAL, component: MaterilaDesigns },
 
   // Wildcard route for 404 page
   { path: '**', component: Pagenotfoundcomponent }

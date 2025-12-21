@@ -1,0 +1,84 @@
+<mat-card>
+  <!-- <mat-card-title>Item Manager (UI Mockup)</mat-card-title> -->
+
+<h3>tepm converter</h3>
+<label for="">
+  Celsius:
+  <input type="number" [value]="celsius()" (input)="updateTemp($event)">
+</label>
+
+<p> fahrenheit : {{fahrenheit()}}</p>
+<hr>
+<button (click)="increase()">increase</button>
+<button (click)="decrese()">decrese</button>
+<button (click)="reset()">reset</button>
+
+  <mat-card>
+    <mat-card-title>Users</mat-card-title>
+  <div *ngIf="user$ | async as user">
+      <h2>Welcome, {{ user.name }}!</h2>
+      <p>Email: {{ user.email }}</p>
+    </div>
+    <button (click)="setNewUser()">change</button>
+</mat-card>
+
+
+<mat-card>
+  <div>
+    <mat-card-title>Username</mat-card-title>
+
+      <h3>Double Count: {{ signalService.doublecount() }}</h3>
+      <button (click)="signalService.increment()">Increment</button>
+      <h2>Counter: {{ signalService.getCount()() }}</h2>
+      <button (click)="signalService.decrement()">Decrement</button>
+    </div>
+</mat-card>
+
+
+<mat-card>
+  <mat-card-title>Username</mat-card-title>
+  <div *ngIf="signalService.loading()">Loading...</div>
+
+<h3>Pending Todos</h3>
+<ul>
+  <!-- @for(todo of signalService.pendingTodos();track todo.id){} -->
+  <li *ngFor="let todo of signalService.pendingTodos()">
+    {{ todo.title }}
+    <button (click)="toggleTodo(todo.id)">✔</button>
+  </li>
+</ul>
+
+<h3>Completed Todos</h3>
+<ul>
+  <li *ngFor="let todo of signalService.completedTodos()">
+    {{todo| json}}
+    {{ todo.title }}
+    <button (click)="toggleTodo(todo.id)">↩</button>
+  </li>
+</ul>
+
+<input #newTodoInput placeholder="New todo" />
+<button (click)="addTodo(newTodoInput.value); newTodoInput.value=''">
+  Add
+</button>
+
+</mat-card>
+
+<!--
+<div *ngIf="loading$ | async">Loading...</div>
+    <div *ngIf="error$ | async as error">Error: {{ error }}</div>
+    <ul>
+      <li *ngFor="let todo of todos$ | async">
+        {{ todo.title }}
+        <input
+          type="checkbox"
+          [checked]="todo.completed"
+          (change)="toggleTodo(todo.id)"
+        >
+      </li>
+    </ul>
+  Footer: total quantity -->
+  <mat-card-footer>
+    <strong>Total Quantity: </strong> 20
+  </mat-card-footer>
+</mat-card>
