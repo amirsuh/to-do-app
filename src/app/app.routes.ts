@@ -56,14 +56,14 @@ export const routes: Routes = [
   // routing route
   {
     path: ROUTE_CONSTANTS.ROUTING,
-    loadComponent:loadrouteComponent
+    loadComponent:loadrouteComponent,data: { reuse: false },
   },
 
-  { path: ROUTE_CONSTANTS.ANGULARMATERIAL, component: MaterilaDesigns},
-  { path: ROUTE_CONSTANTS.ADMIN, component: Admin,
+  { path: ROUTE_CONSTANTS.ANGULARMATERIAL, component: MaterilaDesigns,data: { reuse: true },},
+  { path: ROUTE_CONSTANTS.ADMIN, component: Admin,data: { reuse: true },
     canMatch:[adminLoadGuard]
   },
-  { path: ROUTE_CONSTANTS.PROFILE, component: Profile,resolve: { user: userResolver }},
+  { path: ROUTE_CONSTANTS.PROFILE, component: Profile,resolve: { user: userResolver },data: { reuse: true },},
 
   // Wildcard route for 404 page
   { path: '**', loadComponent:()=>import('./shared/components/pagenotfoundcomponent/pagenotfoundcomponent').then(c=>c.Pagenotfoundcomponent) },
