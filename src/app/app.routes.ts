@@ -46,10 +46,10 @@ export const routes: Routes = [
     loadComponent:loadrouteComponent
   },
 
-  { path: ROUTE_CONSTANTS.ANGULARMATERIAL, component: MaterilaDesigns },
+  { path: ROUTE_CONSTANTS.ANGULARMATERIAL, component: MaterilaDesigns},
 
   // Wildcard route for 404 page
-  { path: '**', loadComponent:()=>import('./shared/components/materila-designs/materila-designs').then(c=>c.MaterilaDesigns) },
+  { path: '**', loadComponent:()=>import('./shared/components/pagenotfoundcomponent/pagenotfoundcomponent').then(c=>c.Pagenotfoundcomponent) },
 
 ];
 

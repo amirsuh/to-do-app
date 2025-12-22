@@ -1,16 +1,66 @@
 import { Component } from '@angular/core';
-import { MatToolbar } from "@angular/material/toolbar";
-import { MatGridTile, MatGridList } from "@angular/material/grid-list";
-import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardSubtitle, MatCardActions } from "@angular/material/card";
-import { MatIcon } from "@angular/material/icon";
+import { MatToolbar } from '@angular/material/toolbar';
+import { MatGridTile, MatGridList } from '@angular/material/grid-list';
+import {
+  MatCard,
+  MatCardHeader,
+  MatCardTitle,
+  MatCardContent,
+  MatCardSubtitle,
+  MatCardActions,
+} from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
+import {
+  NavigationCancel,
+  Event,
+  NavigationEnd,
+  NavigationError,
+  NavigationStart,
+  Router,
+} from '@angular/router';
+import { MatProgressSpinner } from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-routing',
-  imports: [MatToolbar,CommonModule, ],
+  imports: [MatToolbar, CommonModule, MatProgressSpinner],
   templateUrl: './routing.html',
   styleUrl: './routing.scss',
 })
 export class Routing {
+  routingEvents: any;
+  loading: boolean = false;
+  constructor(public router: Router) {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        console.log('Navigation started:', event.url);
+        this.routingEvents = event.url;
+      }
+    });
 
+    this.router.events.subscribe((event: Event) => {
+      if (event instanceof NavigationStart) {
+        console.log('Navigation started:', event.url);
+        this.loading = true;
+      }
+      if (event instanceof NavigationEnd) {
+        console.log('Navigation ended:', event.url);
+        this.loading = false;
+      }
+      if (event instanceof NavigationCancel) {
+        console.warn('Navigation canceled:', event.reason);
+        this.loading = false;
+      }
+      if (event instanceof NavigationError) {
+        console.error('Navigation error:', event.error);
+        this.loading = false;
+      }
+    });
+  }
+
+  navigateToUIPage(){
+    this.router.navigate(['/materialdesigns', 42],{
+  queryParams: { page: 1, size: 10 }
+});
+  }
 }
