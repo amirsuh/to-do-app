@@ -139,6 +139,8 @@ export class Rxjsandobservables implements OnInit, OnDestroy {
   );
   dataSource = new UsersDataSource(this.users$);
   constructor() {
+    localStorage.setItem('user','')
+    localStorage.setItem('role','')
     this.apiService.subject.subscribe((res) => console.log(res));
     this.apiService.newSubject.subscribe((res) => console.log(res));
     this.apiService.neBehSubject.subscribe((res) => console.log(res));

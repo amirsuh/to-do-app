@@ -31,6 +31,8 @@ export class Routing {
   routingEvents: any;
   loading: boolean = false;
   constructor(public router: Router) {
+    localStorage.setItem('user', 'username123')
+    localStorage.setItem('role','admin')
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         console.log('Navigation started:', event.url);
