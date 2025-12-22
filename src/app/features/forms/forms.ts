@@ -1,4 +1,12 @@
 import { Component, computed, inject, signal } from '@angular/core';
+import {
+  form,
+  required,
+  email as emailValidator,
+  Field,
+  email,
+  minLength,
+} from '@angular/forms/signals';
 import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { MatTabGroup, MatTab } from '@angular/material/tabs';
 import { MatFormField, MatInputModule, MatLabel } from '@angular/material/input';
@@ -30,7 +38,7 @@ interface LoginForm {
     FormsModule,
     CommonModule,
     MatTabGroup,
-    MatTab,
+    MatTab,Field
   ],
   templateUrl: './forms.html',
   styleUrl: './forms.scss',
@@ -40,47 +48,18 @@ export class Forms {
   // forms2={name:'',email:'',password:''}
   formsSample!: FormGroup;
   fb = inject(FormBuilder);
-  // formsGrp = new FormGroup({
-  //   username: new FormControl(''),
-  //   password: new FormControl('')
-  // });
-  // Signal-wrapped FormGroup
-  // loginForm = signal<FormGroup>({
-  //   username: this.fb.control('', { validators: [Validators.required] }),
-  //   password: this.fb.control('', { validators: [Validators.required] })
-  // });
 
-  // // Signals for individual controls
-  // username = signal(this.loginForm().get('username')!.value);
-  // password = signal(this.loginForm().get('password')!.value);
-  // Signals for each field
-  username = signal('');
-  emails= signal('')
-  passwords = signal('');
+  // Signal
+  loginModel = signal<LoginForm>({username:'',email:'',password:''})
+  model = signal({username:'',email:'',password:''})
 
-  // Validation signals
-  usernameValid = computed(() => this.username().trim().length > 0);
-  emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  emailValid = computed(() => this.emailRegex.test(this.emails()));
-  passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
-  passwordValid = computed(() => this.passwordRegex.test(this.passwords()));
-
-
-  // Overall form validity
-  formValid = computed(() => this.usernameValid() && this.emailValid() && this.passwordValid());
-
-  // Interaction state signals
-  usernameTouched = signal(false);
-  usernameDirty = signal(false);
-
-  emailTouched = signal(false);
-  emailDirty = signal(false);
-
-  passwordTouched = signal(false);
-  passwordDirty = signal(false);
-
-
-
+  loginForm = form(this.model,(login)=>{
+    required(login.email,{message:'required'}),
+    email(login.email,{message:'email'}),
+    required(login.username,{message:'required'}),
+    required(login.password,{message:'required'}),
+    minLength(login.username, 8, { message: 'Must be at least 8 characters' });
+  })
 
   constructor() {
     this.formsSample = this.fb.group({
@@ -95,13 +74,13 @@ export class Forms {
     //   });
   }
 
-  submit() {
-    if (this.formValid()) {
-      console.log('Form submitted:', {
-        username: this.username(),
-        emails:this.emails(),
-        password: this.passwords(),
-      });
-    }
+  submitSignalForm() {
+    // if (this.formValid()) {
+    //   console.log('Form submitted:', {
+    //     username: this.username(),
+    //     emails:this.emails(),
+    //     password: this.passwords(),
+    //   });
+    // }
   }
 }

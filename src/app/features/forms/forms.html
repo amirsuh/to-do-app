@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-title>Tabs</mat-card-title>
   <mat-tab-group>
-    <mat-tab label="Info">
+    <mat-tab label="Forms-driven">
       <mat-card-title>Forms-driven(Template)</mat-card-title>
       <mat-card-content>
         <form #userForm="ngForm">
@@ -51,108 +51,97 @@
         </form>
       </mat-card-content>
     </mat-tab>
-    <mat-tab label="Stats">
-      <mat-card-title>reactive</mat-card-title>
+    <mat-tab label="reactive forms">
+      <mat-card-title>reactive forms</mat-card-title>
       <mat-card-content>
         <form [formGroup]="formsSample">
           <mat-form-field appearance="outline">
             <mat-label>Name</mat-label>
-            <input matInput formControlName="name" type="text"/>
-            <mat-error *ngIf="formsSample.get('name')?.invalid && (formsSample.get('name')?.touched || formsSample.get('name')?.dirty)">
+            <input matInput formControlName="name" type="text" />
+            <mat-error
+              *ngIf="formsSample.get('name')?.invalid && (formsSample.get('name')?.touched || formsSample.get('name')?.dirty)">
               <span *ngIf="formsSample.get('name')?.errors?.['required']">
-               required
+                required
               </span>
               <span *ngIf="formsSample.get('name')?.errors?.['minlength']">
-               minlength
+                minlength
               </span>
             </mat-error>
           </mat-form-field>
           <mat-form-field appearance="outline">
             <mat-label>Email</mat-label>
-            <input matInput formControlName="email" type="email"/>
-             <mat-error *ngIf="formsSample.get('email')?.invalid && (formsSample.get('email')?.touched || formsSample.get('email')?.dirty)">
+            <input matInput formControlName="email" type="email" />
+            <mat-error
+              *ngIf="formsSample.get('email')?.invalid && (formsSample.get('email')?.touched || formsSample.get('email')?.dirty)">
               <span *ngIf="formsSample.get('email')?.errors?.['required']">
-               required
+                required
               </span>
               <span *ngIf="formsSample.get('email')?.errors?.['minlength']">
-               minlength
+                minlength
               </span>
             </mat-error>
           </mat-form-field>
           <mat-form-field appearance="outline">
             <mat-label>Password</mat-label>
-            <input matInput formControlName="password" type="password"/>
-             <mat-error *ngIf="formsSample.get('password')?.invalid && (formsSample.get('password')?.touched || formsSample.get('password')?.dirty)">
+            <input matInput formControlName="password" type="password" />
+            <mat-error
+              *ngIf="formsSample.get('password')?.invalid && (formsSample.get('password')?.touched || formsSample.get('password')?.dirty)">
               <span *ngIf="formsSample.get('password')?.errors?.['required']">
-               required
+                required
               </span>
               <span *ngIf="formsSample.get('password')?.errors?.['minlength']">
-               minlength
+                minlength
               </span>
             </mat-error>
           </mat-form-field>
-            <button  mat-raised-button color="primary">
+          <button mat-raised-button color="primary">
             Submit
           </button>
         </form>
       </mat-card-content>
 
     </mat-tab>
-    <mat-tab label="Settings">
-      <mat-card-title>Reactive + signal</mat-card-title>
+
+    <mat-tab label="Signal forms">
+      <mat-card-title>signal forms</mat-card-title>
       <mat-card-content>
-        <form >
+        <form (ngSubmit)="submitSignalForm()">
           <mat-form-field appearance="outline">
             <mat-label>Name</mat-label>
-            <input matInput  name="name" type="text" required minlength="3" [value]="username()"
-        (input)="username.set($event.target.value)"
-        placeholder="Username"
-      />
-              </mat-form-field>
-                <span *ngIf="!usernameValid() && usernameTouched()">Username is required</span>
+            <input matInput [field]="loginForm.username" type="text" />
+            @if (loginForm.username().invalid() && loginForm.username().touched()) {
+            <mat-error>
+              @for (error of loginForm.username().errors(); track error.kind) {
+              <span class="error">{{error.message}}</span>
+              }
+
+            </mat-error>
+            }
+          </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>email</mat-label>
-            <input matInput type="email" name="email" email   required [value]="emails()"
-        (input)="emails.set($event.target.value)"
-        placeholder="email"/>
-
-          </mat-form-field>
-          <span *ngIf="!emailValid()">Username is required</span>
-          <mat-form-field appearance="outline">
-            <mat-label>password</mat-label>
-            <input matInput name="password" type="password" minlength="8" pattern="^(?=.*[a-z]).*$" required [value]="passwords()"
-        (input)="passwords.set($event.target.value)"
-        placeholder="email"/>
-
-          </mat-form-field>
-          <span *ngIf="!passwordValid()">Username is required</span>
-            <button  mat-raised-button color="primary">
-            Submit
-          </button>
-        </form>
-      </mat-card-content>
-    </mat-tab>
-        <mat-tab label="Settings">
-      <mat-card-title>signal</mat-card-title>
-      <mat-card-content>
-        <form >
-          <mat-form-field appearance="outline">
-            <mat-label>Name</mat-label>
-            <input matInput  name="name" type="text" required minlength="3"/>
-
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-            <mat-label>email</mat-label>
-            <input matInput type="email" name="email" email   required/>
-
+            <input matInput [field]="loginForm.email" type="email" email />
+            @if(loginForm.email().touched() && (loginForm.email().touched() || loginForm.email().dirty())){
+            <mat-error>
+              @for(error of loginForm.email().errors();track error.kind){
+              <span>{{error.message}}</span>
+              }
+            </mat-error>
+            }
           </mat-form-field>
           <mat-form-field appearance="outline">
             <mat-label>password</mat-label>
-            <input matInput name="password" type="password" minlength="8" pattern="^(?=.*[a-z]).*$" required/>
-
+            <input matInput [field]="loginForm.password" type="password" />
+            @if(loginForm.password().touched() && (loginForm.password().touched() || loginForm.password().dirty())){
+            <mat-error>
+              @for(error of loginForm.password().errors();track error.kind){
+              <span>{{error.message}}</span>
+              }
+            </mat-error>
+            }
           </mat-form-field>
-            <button  mat-raised-button color="primary">
+          <button type="submit" [disabled]="!loginForm().valid()" mat-raised-button color="primary">
             Submit
           </button>
         </form>
