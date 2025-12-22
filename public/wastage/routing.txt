@@ -1,0 +1,17 @@
+  // { path: 'materialdesign:/extra',component: MaterilaDesigns},
+   { path: 'materialdesign', component: MaterilaDesigns ,children: [
+      // Example child route: matches 'material-design/some-specific-subpath'
+      // { path: 'some-specific-subpath', component: SpecificSubpathComponent },
+
+      // Wildcard within the 'material-design' scope: matches any path *after* 'material-design'
+      { path: '**', component: MaterilaDesigns }
+      // This will catch 'material-design/42', 'material-design/42?page=1&size=10', 'material-designs', etc.
+      // Note: 'material-designs' is a different static path, see next point for handling it.
+    ]},
+  // { path: 'materialdesign/:extra', component: MaterilaDesigns },
+  { path: 'materialdesigns**', redirectTo: 'materialdesign', pathMatch: 'full'},
+    {
+    path: 'materialdesign',
+    redirectTo: 'materialdesign',
+    pathMatch: 'prefix'
+  },

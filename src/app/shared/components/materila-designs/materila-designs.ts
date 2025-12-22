@@ -27,6 +27,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { StateService } from '../../../features/statemanagement/state-service';
 import { CommonModule } from '@angular/common';
 import { MatGridList, MatGridTile } from "@angular/material/grid-list";
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-materila-designs',
@@ -70,7 +71,10 @@ cards = [
     { name: 'Bob', role: 'Designer' }
   ];
   user$;
-  constructor(private userService:StateService){
+  constructor(private userService:StateService,private route:ActivatedRoute){
     this.user$ = this.userService.user$;
+    this.route.queryParamMap.subscribe(params => {
+  console.log(params.get('page'));
+});
   }
 }
