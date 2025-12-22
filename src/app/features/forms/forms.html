@@ -1,3 +1,35 @@
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+  <!-- Feature Column -->
+  <ng-container matColumnDef="feature">
+    <th mat-header-cell *matHeaderCellDef> Feature </th>
+    <td mat-cell *matCellDef="let element"> {{element.feature}} </td>
+  </ng-container>
+
+  <!-- Template-Driven Column -->
+  <ng-container matColumnDef="templateDriven">
+    <th mat-header-cell *matHeaderCellDef> Template-Driven </th>
+    <td mat-cell *matCellDef="let element"> {{element.templateDriven}} </td>
+  </ng-container>
+
+  <!-- Reactive Column -->
+  <ng-container matColumnDef="reactive">
+    <th mat-header-cell *matHeaderCellDef> Reactive </th>
+    <td mat-cell *matCellDef="let element"> {{element.reactive}} </td>
+  </ng-container>
+
+  <!-- Signal-Based Column -->
+  <ng-container matColumnDef="signalBased">
+    <th mat-header-cell *matHeaderCellDef> Signal-Based </th>
+    <td mat-cell *matCellDef="let element"> {{element.signalBased}} </td>
+  </ng-container>
+
+  <!-- Header and Row Declarations -->
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+
 <mat-card>
   <mat-card-title>Tabs</mat-card-title>
   <mat-tab-group>

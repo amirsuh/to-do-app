@@ -5,5 +5,7 @@ export const ROUTE_CONSTANTS = {
   ANGULARFORMS:'angularforms',
   ANGULARMATERIAL:'materialdesign',
   FORMS:'forms',
-  ROUTING:'routing'
+  ADMIN:'admin',
+  ROUTING:'routing',
+  PROFILE:'profile'
 }

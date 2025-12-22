@@ -1,6 +1,13 @@
 import { Routes } from '@angular/router';
 import { ROUTE_CONSTANTS } from './core/constants/route-constants';
 import { MaterilaDesigns } from './shared/components/materila-designs/materila-designs';
+import { authguardGuard } from './core/guards/authguard-guard';
+import { childAuthGuard } from './core/guards/childAuths/child-auth-guard';
+import { canDeactivateForm } from './core/guards/deactivate/form-deactivate-guard';
+import { Admin } from './features/routing/component/admin/admin';
+import { adminLoadGuard } from './core/guards/canload/admin-load-guard';
+import { Profile } from './features/routing/component/profile/profile';
+import { userResolver } from './core/guards/user-resolver';
 async function loadrouteComponent() {
   // return import('./features/routing/routing').then((m) => m.Routing);
   const c = await import('./features/routing/routing');
@@ -30,6 +37,8 @@ export const routes: Routes = [
     path: ROUTE_CONSTANTS.STATEMANAGEMNETANDNGRS,
     loadComponent: () =>
       import('./features/statemanagement/statemanagement').then((m) => m.Statemanagement),
+        canActivate: [authguardGuard],
+    canActivateChild: [childAuthGuard],
   },
 
   // Forms route
@@ -38,15 +47,23 @@ export const routes: Routes = [
     loadComponent() {
       return import('./features/forms/forms').then((c) => c.Forms);
     },
+
+    canDeactivate: [canDeactivateForm]
+
+
   },
 
   // routing route
   {
     path: ROUTE_CONSTANTS.ROUTING,
-    loadComponent:loadrouteComponent
+    loadComponent:loadrouteComponent,data: { reuse: false },
   },
 
-  { path: ROUTE_CONSTANTS.ANGULARMATERIAL, component: MaterilaDesigns},
+  { path: ROUTE_CONSTANTS.ANGULARMATERIAL, component: MaterilaDesigns,data: { reuse: true },},
+  { path: ROUTE_CONSTANTS.ADMIN, component: Admin,data: { reuse: true },
+    canMatch:[adminLoadGuard]
+  },
+  { path: ROUTE_CONSTANTS.PROFILE, component: Profile,resolve: { user: userResolver },data: { reuse: true },},
 
   // Wildcard route for 404 page
   { path: '**', loadComponent:()=>import('./shared/components/pagenotfoundcomponent/pagenotfoundcomponent').then(c=>c.Pagenotfoundcomponent) },

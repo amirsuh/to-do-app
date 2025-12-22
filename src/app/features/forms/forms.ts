@@ -20,6 +20,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MatTableModule } from '@angular/material/table';
 interface LoginForm {
   username: string;
   email: string;
@@ -39,12 +40,24 @@ interface LoginForm {
     FormsModule,
     CommonModule,
     MatTabGroup,
-    MatTab,Field
+    MatTab,Field,MatTableModule
   ],
   templateUrl: './forms.html',
   styleUrl: './forms.scss',
 })
 export class Forms implements OnInit{
+  displayedColumns: string[] = ['feature', 'templateDriven', 'reactive', 'signalBased'];
+
+  dataSource = [
+    { feature: 'Form Definition', templateDriven: 'HTML', reactive: 'TypeScript', signalBased: 'TypeScript' },
+    { feature: 'Typing', templateDriven: '❌ Weak', reactive: '✅ Strong', signalBased: '✅ Strong' },
+    { feature: 'Scalability', templateDriven: '❌ Low', reactive: '✅ High', signalBased: '⚠️ Medium' },
+    { feature: 'Dynamic Forms', templateDriven: '❌ Hard', reactive: '✅ Easy', signalBased: '⚠️ Manual' },
+    { feature: 'Testing', templateDriven: '❌ Hard', reactive: '✅ Easy', signalBased: '⚠️ Manual' },
+    { feature: 'Performance', templateDriven: '⚠️ Average', reactive: '✅ Good', signalBased: '🚀 Excellent' },
+    { feature: 'Learning Curve', templateDriven: '😊 Easy', reactive: '😐 Medium', signalBased: '😐 Medium–High' },
+  ];
+
   forms = { name: '', email: '', password: '' };
 
   // forms2={name:'',email:'',password:''}
@@ -115,6 +128,14 @@ this.formsSample.get('contactMethod')?.valueChanges.subscribe(method => {
     this.formsSample.statusChanges.subscribe(status => console.log(status));
 
   }
+  // This method is called by the guard
+  canDeactivate(): boolean {
+    if (this.formsSample.dirty) {
+      return confirm('You have unsaved changes. Do you really want to leave?');
+    }
+    return true;
+  }
+
 
   submitSignalForm() {
   }

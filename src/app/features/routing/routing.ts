@@ -20,6 +20,7 @@ import {
   Router,
 } from '@angular/router';
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
+import { Authservice } from '../../core/services/auth/authservice';
 
 @Component({
   selector: 'app-routing',
@@ -30,7 +31,13 @@ import { MatProgressSpinner } from "@angular/material/progress-spinner";
 export class Routing {
   routingEvents: any;
   loading: boolean = false;
-  constructor(public router: Router) {
+  lastNav:any
+  constructor(public router: Router,private auth: Authservice) {
+    const navigation= this.router.lastSuccessfulNavigation;
+    this.lastNav = this.router.lastSuccessfulNavigation;
+    console.log(navigation());
+    localStorage.setItem('user', 'username123')
+    localStorage.setItem('role','admin')
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         console.log('Navigation started:', event.url);
@@ -63,4 +70,15 @@ export class Routing {
   queryParams: { page: 1, size: 10 }
 });
   }
+
+
+    login() {
+    this.auth.login({ email: 'test@test.com', password: '123456' })
+      .subscribe(() => console.log('Logged in!'));
+  }
+
+  logout() {
+    this.auth.logout();
+  }
+
 }
