@@ -1,0 +1,20 @@
+There are multiple approaches:
+
+Dependency Injection: Inject another directive via constructor.
+@Host() or @Optional(): Decorators help access directives in the same DOM tree.
+EventEmitter: Emit events from one directive and capture them in another.
+Example using DI:
+
+@Directive({ selector: '[childDirective]' })
+export class ChildDirective {
+  log() {
+    console.log('Child directive method called');
+  }
+}
+
+@Directive({ selector: '[parentDirective]' })
+export class ParentDirective {
+  constructor(@Optional() private child: ChildDirective) {
+    if (child) child.log();
+  }
+}

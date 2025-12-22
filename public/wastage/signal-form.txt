@@ -1,0 +1,75 @@
+// formsGrp = new FormGroup({
+  //   username: new FormControl(''),
+  //   password: new FormControl('')
+  // });
+  // Signal-wrapped FormGroup
+  // loginForm = signal<FormGroup>({
+  //   username: this.fb.control('', { validators: [Validators.required] }),
+  //   password: this.fb.control('', { validators: [Validators.required] })
+  // });
+
+  // // Signals for individual controls
+  // username = signal(this.loginForm().get('username')!.value);
+  // password = signal(this.loginForm().get('password')!.value);
+  // Signals for each field
+  username = signal('');
+  emails= signal('')
+  passwords = signal('');
+
+  // Validation signals
+  usernameValid = computed(() => this.username().trim().length > 0);
+  emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  emailValid = computed(() => this.emailRegex.test(this.emails()));
+  passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+  passwordValid = computed(() => this.passwordRegex.test(this.passwords()));
+
+
+  // Overall form validity
+  formValid = computed(() => this.usernameValid() && this.emailValid() && this.passwordValid());
+
+  // Interaction state signals
+  usernameTouched = signal(false);
+  usernameDirty = signal(false);
+
+  emailTouched = signal(false);
+  emailDirty = signal(false);
+
+  passwordTouched = signal(false);
+  passwordDirty = signal(false);
+
+
+   <mat-tab label="Settings">
+      <mat-card-title>Reactive + signal</mat-card-title>
+      <mat-card-content>
+        <form >
+          <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput  name="name" type="text" required minlength="3" [value]="username()"
+        (input)="username.set($event.target.value)"
+        placeholder="Username"
+      />
+              </mat-form-field>
+                <span *ngIf="!usernameValid() && usernameTouched()">Username is required</span>
+
+          <mat-form-field appearance="outline">
+            <mat-label>email</mat-label>
+            <input matInput type="email" name="email" email   required [value]="emails()"
+        (input)="emails.set($event.target.value)"
+        placeholder="email"/>
+
+          </mat-form-field>
+          <span *ngIf="!emailValid()">Username is required</span>
+          <mat-form-field appearance="outline">
+            <mat-label>password</mat-label>
+            <input matInput name="password" type="password" minlength="8" pattern="^(?=.*[a-z]).*$" required [value]="passwords()"
+        (input)="passwords.set($event.target.value)"
+        placeholder="email"/>
+
+          </mat-form-field>
+          <span *ngIf="!passwordValid()">Username is required</span>
+            <button  mat-raised-button color="primary">
+            Submit
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-tab>

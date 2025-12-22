@@ -19,7 +19,71 @@
 
     <!-- GRID -->
     <div class="grid">
+  <h2>Card Grid</h2>
 
+  <mat-grid-list cols="3" rowHeight="1:1" gutterSize="16px">
+    <mat-grid-tile *ngFor="let card of cards">
+      <mat-card>
+        <mat-card-header>
+          <mat-icon mat-card-avatar>dashboard</mat-icon>
+          <mat-card-title>{{ card.title }}</mat-card-title>
+          <mat-card-subtitle>Material Card</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <p>{{ card.description }}</p>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <button mat-button color="primary">VIEW</button>
+          <button mat-button color="accent">EDIT</button>
+        </mat-card-actions>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <!-- ========================= -->
+  <!-- STRUCTURE 2: SPLIT LAYOUT -->
+  <!-- ========================= -->
+  <h2>Second Structure</h2>
+
+  <div class="split-layout">
+
+    <!-- LEFT PANEL -->
+    <mat-card class="info-card">
+      <mat-card-title>Information</mat-card-title>
+      <mat-card-content>
+        <p>
+          This layout demonstrates a split structure using Angular Material.
+          Text content on one side and feature cards on the other.
+        </p>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- RIGHT PANEL -->
+    <div class="feature-cards">
+      <mat-card class="feature">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>settings</mat-icon>
+          <mat-card-title>Feature One</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Configurable options</p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="feature">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>security</mat-icon>
+          <mat-card-title>Feature Two</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Secure and reliable</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+  </div>
       <!-- CARD -->
       <mat-card>
         <mat-card-title>Buttons</mat-card-title>
@@ -131,9 +195,11 @@
 
   </mat-sidenav-content>
 </mat-sidenav-container>
-<mat-form-field style="width:auto">
+<!-- <mat-form-field style="width:auto">
+  <mat-label>Name</mat-label>
+
   <div *ngIf="user$ | async as user">
       <h2>Welcome, {{ user.name }}!</h2>
       <p>Email: {{ user.email }}</p>
     </div>
-</mat-form-field>
+</mat-form-field> -->
