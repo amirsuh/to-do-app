@@ -1,5 +1,5 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { PreloadAllModules, provideRouter, withPreloading } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideStore } from '@ngrx/store';
@@ -10,7 +10,12 @@ import { TodoEffects } from './state/todo-ngrx/todo.effect';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes),
+    provideRouter(routes,
+      withPreloading(PreloadAllModules)
+      // with modules
+      // RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+
+    ),
     // provideStore({todos:todoReducer}),provideEffects([TodoEffects])
  // for NgRx
 

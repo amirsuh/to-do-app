@@ -26,40 +26,45 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { StateService } from '../../../features/statemanagement/state-service';
 import { CommonModule } from '@angular/common';
+import { MatGridList, MatGridTile } from "@angular/material/grid-list";
 
 @Component({
   selector: 'app-materila-designs',
   imports: [MatToolbarModule,
-MatSidenavModule,
-MatButtonModule,
-MatIconModule,
-MatCardModule,
-MatFormFieldModule,
-MatInputModule,
-MatSelectModule,
-MatCheckboxModule,
-MatRadioModule,
-MatSlideToggleModule,
-MatSliderModule,
-MatDatepickerModule,
-MatNativeDateModule,
-MatTabsModule,
-MatTableModule,
-MatListModule,
-MatChipsModule,
-MatMenuModule,
-MatBadgeModule,
-MatProgressBarModule,
-MatProgressSpinnerModule,
-MatExpansionModule,
-MatTooltipModule,CommonModule,
-MatSnackBarModule],
+    MatSidenavModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatSlideToggleModule,
+    MatSliderModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatTabsModule,
+    MatTableModule,
+    MatListModule,
+    MatChipsModule,
+    MatMenuModule,
+    MatBadgeModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatExpansionModule,
+    MatTooltipModule, CommonModule,
+    MatSnackBarModule, MatGridList, MatGridTile],
   templateUrl: './materila-designs.html',
   styleUrl: './materila-designs.scss',
 })
 export class MaterilaDesigns {
   columns = ['name', 'role'];
-
+cards = [
+    { title: 'Card One', description: 'This is a material card.' },
+    { title: 'Card Two', description: 'Responsive grid layout.' },
+    { title: 'Card Three', description: 'Angular Material design.' }
+  ];
   data = [
     { name: 'Alice', role: 'Developer' },
     { name: 'Bob', role: 'Designer' }

@@ -1,0 +1,31 @@
+.container {
+  padding: 24px;
+}
+
+.split-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 16px;
+}
+
+.feature-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.info-card {
+  height: fit-content;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  mat-grid-list {
+    grid-auto-flow: row;
+  }
+
+  .split-layout {
+    grid-template-columns: 1fr;
+  }
+}

@@ -4,5 +4,6 @@ export const ROUTE_CONSTANTS = {
   STATEMANAGEMNETANDNGRS:'statemanagement',
   ANGULARFORMS:'angularforms',
   ANGULARMATERIAL:'materialdesign',
-  FORMS:'forms'
+  FORMS:'forms',
+  ROUTING:'routing'
 }

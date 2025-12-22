@@ -82,6 +82,20 @@
             </mat-error>
           </mat-form-field>
           <mat-form-field appearance="outline">
+            <mat-label>Phone</mat-label>
+            <input matInput formControlName="phone" type="phone" />
+            <mat-error
+              *ngIf="formsSample.get('phone')?.invalid && (formsSample.get('phone')?.touched || formsSample.get('phone')?.dirty)">
+              <span *ngIf="formsSample.get('phone')?.errors?.['required']">
+                required
+              </span>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Contact Method</mat-label>
+            <input matInput formControlName="contactMethod" type="contactMethod" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
             <mat-label>Password</mat-label>
             <input matInput formControlName="password" type="password" />
             <mat-error
@@ -92,9 +106,12 @@
               <span *ngIf="formsSample.get('password')?.errors?.['minlength']">
                 minlength
               </span>
+              <span *ngIf="formsSample.get('password')?.errors?.['pattern']">
+                pattern
+              </span>
             </mat-error>
           </mat-form-field>
-          <button mat-raised-button color="primary">
+          <button [disabled]="formsSample.invalid" mat-raised-button color="primary">
             Submit
           </button>
         </form>
@@ -149,3 +166,17 @@
     </mat-tab>
   </mat-tab-group>
 </mat-card>
+
+<form [formGroup]="formarray" (ngSubmit)="onSubmit()">
+
+  <div formArrayName="skills">
+    <div *ngFor="let skill of skills.controls; let i = index">
+      <input [formControlName]="i" placeholder="Enter skill" />
+      <button type="button" (click)="removeSkill(i)">Remove</button>
+    </div>
+  </div>
+
+  <button type="button" (click)="addSkill()">Add Skill</button>
+  <button type="submit">Submit</button>
+</form>
+
