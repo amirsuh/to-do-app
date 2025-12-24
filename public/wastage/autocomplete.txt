@@ -1,0 +1,19 @@
+ // Check cache first
+            if (this.recipeCacheMap.has(text)) {
+              const cachedResults = this.recipeCacheMap.get(text) || [];
+              this.resultsOfrecipes.set(cachedResults); // use cached value
+              return;
+            }
+
+            // If not cached, call API
+            this.service.searchRecipe(text).subscribe((res: any) => {
+              const recipes = res.recipes || [];
+
+              // Update Signal / results
+              this.resultsOfrecipes.set(recipes);
+
+              // Cache the results
+              this.recipeCacheMap.set(text, recipes);
+            });
+            console.log(this.resultsOfrecipes())
+          });

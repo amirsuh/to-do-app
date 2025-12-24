@@ -1,0 +1,46 @@
+<p>autocomplete works!</p>
+
+<div class="app">
+  <h2>Autocomplete search</h2>
+
+  <div class="search-box">
+    <input
+      type="text"
+      [(ngModel)]="searchText"
+      (ngModelChange)="onChangeInput($event)"
+      placeholder="Search recipes..." (blur)="onBlur('template')"
+    (focus)="onFocus('template')"
+    >
+
+  </div>
+
+  @if(isFocus){
+  <div class="result-container" >
+    <!-- @for(receipe of recepeCache | async; track receipe.id) { -->
+     @for(receipe of resultsOfrecipes(); track receipe.id) {
+      <p class="results">
+        {{ receipe.name }}
+      </p>
+    }
+  </div>
+  }
+
+
+
+<div class="app">
+  <div class="search-box">
+  <input type="text" (blur)="onBlur('reactive')" (focus)="onFocus('reactive')" [formControl]="searchTextReactive">
+</div>
+
+  @if(isReactiveFocus){
+  <div class="result-container" >
+    <!-- @for(receipe of recepeCache | async; track receipe.id) { -->
+     @for(receipe of resultsOfrecipesreactive(); track receipe.id) {
+      <p class="results">
+        {{ receipe.name }}
+      </p>
+    }
+  </div>
+  }
+</div>
+</div>
