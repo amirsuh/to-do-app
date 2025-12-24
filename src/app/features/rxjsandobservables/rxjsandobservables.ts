@@ -10,14 +10,17 @@ import {
 import { RxjsandobservablesService, User } from './service/rxjsandobservables';
 import { HttpClient } from '@angular/common/http';
 import {
+  catchError,
   combineLatest,
   concat,
   concatMap,
   debounceTime,
   delay,
   distinctUntilChanged,
+  EMPTY,
   exhaustMap,
   filter,
+  forkJoin,
   from,
   fromEvent,
   interval,
@@ -138,7 +141,7 @@ export class Rxjsandobservables implements OnInit, OnDestroy {
     shareReplay({ bufferSize: 1, refCount: true })
   );
   dataSource = new UsersDataSource(this.users$);
-  constructor() {
+  constructor(private service: AutocompleteService) {
     localStorage.setItem('user','')
     localStorage.setItem('role','')
     this.apiService.subject.subscribe((res) => console.log(res));
@@ -455,10 +458,52 @@ export class Rxjsandobservables implements OnInit, OnDestroy {
         this.message = msg;
       });
   }
+
+
+  callrxjsopertors(){
+        // mergeMap
+    // from([2,4,3,5,6,4444]).pipe(mergeMap(res=>this.service.getUser(res))).subscribe({
+    //   next:(res) => console.log(res),
+    //   error:(error:any)=> console.log(error),
+    //   complete:()=>console.log('complete')
+    // })
+    // ConcatMap
+    // from([2,3,4,5,,4,6]).pipe(concatMap(res=>this.service.getUser(res))).subscribe({
+    //   next:(res) => console.log(res),
+    //   error:(error:any)=> console.log(error),
+    //   complete:()=>console.log('complete')
+    // })
+        // ConcatMap
+    from([44444,2,3,4,5,3,6]).pipe(concatMap(res=>this.service.getUser(res).pipe(
+      catchError(err=>{
+        console.log(err)
+        return EMPTY
+      })
+    ))).subscribe({
+      next:(res) => console.log(res),
+      error:(error:any)=> console.log(error),
+      complete:()=>console.log('complete')
+    })
+     // ConcatMap
+    forkJoin([1,2,3,4,5,3,6,44444].map(res=>this.service.getUser(res)
+    .pipe(
+      catchError(err => {
+        console.error('Failed for id:', res, err);
+        return of(null); // or return a fallback value
+      }))
+    ))
+      // pipe(exhaustMap(res=>this.service.getUser(res))))
+    //   .subscribe({
+    //   next:(res) => console.log(res),
+    //   error:(error:any)=> console.log(error),
+    //   complete:()=>console.log('complete')
+    // })
+  }
 }
 
 
 import { DataSource } from '@angular/cdk/collections';
+import { AutocompleteService } from '../autocomplete-searchbar/service/autocomplete';
 
 export class UsersDataSource extends DataSource<User> {
   constructor(private users$: Observable<User[]>) {

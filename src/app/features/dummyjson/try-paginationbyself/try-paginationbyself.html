@@ -1,0 +1,17 @@
+<p>try-paginationbyself works!</p>
+<div class="container">
+  @for(product of productsData();track product.id){
+    <div class="product-card">
+      <img class="imageCls" [src]="product.images" [alt]="product.title">
+      <span>{{product.title}}</span>
+    </div>
+  }
+</div>
+
+<div class="pagination-container">
+ <button [disabled] ="currentPage==0" (click)="prevPage ()">⬅️</button>
+  <ng-container *ngFor="let page of numbers">
+    <span [class]="'pagination-buttons '+ (page==currentPage ? 'active':'')"  (click)="gotoNextPage(page)">{{page}}</span>
+  </ng-container>
+   <button [disabled]="currentPage==numbers.length-1" (click)="nextPage()">➡️</button>
+</div>

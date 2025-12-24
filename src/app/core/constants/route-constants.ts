@@ -7,5 +7,6 @@ export const ROUTE_CONSTANTS = {
   FORMS:'forms',
   ADMIN:'admin',
   ROUTING:'routing',
-  PROFILE:'profile'
+  PROFILE:'profile',
+  PAGINATION:'pagination'
 }

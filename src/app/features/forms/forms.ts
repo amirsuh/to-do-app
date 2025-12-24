@@ -21,6 +21,7 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
+import { Autocomplete } from "../autocomplete-searchbar/autocomplete/autocomplete";
 interface LoginForm {
   username: string;
   email: string;
@@ -40,8 +41,9 @@ interface LoginForm {
     FormsModule,
     CommonModule,
     MatTabGroup,
-    MatTab,Field,MatTableModule
-  ],
+    MatTab, Field, MatTableModule,
+    Autocomplete
+],
   templateUrl: './forms.html',
   styleUrl: './forms.scss',
 })
