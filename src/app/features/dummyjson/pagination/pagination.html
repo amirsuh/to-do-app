@@ -1,0 +1,18 @@
+<!-- <p>pagination works!</p>
+<div class="container">
+  @for(product of productsData();track product){
+  <div class="product-card">
+      <img class="imageCls" [src]="product.images ? product.images:'not avaialables'" [alt]="product.title">
+      <span style="text-align: end;">{{product.title}}</span>
+
+  </div>
+  }
+
+
+</div>
+<div class="pagination-container">
+  <ng-container *ngFor="let number of numbers">
+    <span class="pagination-buttons" (click)="gotoNextPage(number)">{{ number }}&nbsp;</span>
+  </ng-container>
+</div> -->
+<app-try-paginationbyself></app-try-paginationbyself>

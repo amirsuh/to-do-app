@@ -1,0 +1,33 @@
+.container{
+  font-family:'sans-serif';
+  text-align:center;
+      display: flex;
+    flex-wrap: wrap;
+}
+
+.product-card{
+    display: flex;
+    width: 490px;
+    flex-wrap: wrap;
+    border: 1px solid black;
+    margin: 5px;
+    padding: 5px;
+}
+.imageCls{
+  width: 260px;
+  height: 260px;
+}
+.pagination-buttons{
+  padding: 5px;
+    margin: 10px;
+    border: 1px solid black;
+    height: 36px;
+    width: 27px;
+}
+.pagination-buttons:hover{
+  cursor: pointer;
+}
+.pagination-container{
+  display: flex;
+  justify-content: center;
+}
