@@ -116,4 +116,8 @@ export class Autocomplete {
   onFocus(type: string) {
     type == 'reactive' ? (this.isReactiveFocus = true) : (this.isFocus = true);
   }
+
+  trackByFn( item: any): number {
+    return item.id; // or any unique identifier in your data
+  }
 }

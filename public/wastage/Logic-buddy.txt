@@ -1,0 +1,56 @@
+Logic buddy
+1.Angular: What challenges you face when you upgraded angular version?
+  I.what issues you faced and how you resolved?
+  II.how did you got help from angular.dev?
+
+2.Angular: What is difference between ngOnchanges and ngDocheck?
+  I.what does ngviewAfterInit do and how its
+  II. Every hook asked in-details
+  III. scenario based Questions and Answers on lifecycle hook
+
+3.Angular: what is Lazy Loading? Asked syntax for bot loadChildren and loadComponent?
+
+4.Angular: what is state management in angular? how to choose from signal,subject and NGRX?
+
+5.Angular: what are RXJS Operators? creation,flattening And Mergemap,switchmap,concatmap.
+
+6.Angular: XSS security.
+
+7. Angular: Which interface we use to implement guard?
+
+8.TypeScript: What is generic type?
+
+
+1.on large enterprise-level apllication with frequent ui updates how can we facing performance issues ? how do you optimize change detection?
+2.why do we use zone.js?
+3.how changedetection.onpush strategy works internally?
+4.how do we avoid memory leaks in angular?
+5.how do we implement authentication-logging and error handling across all rest Api calls?
+6.write down error-interceptor interceptors?
+7.When to use directives?
+8.write a custom directive for some-use-case.?
+9.Why are you looking for change?
+10.what is your key strength?
+11.Do you have any questions?
+
+
+
+1. subject,behsubject,replaysubject.
+2. RTOS flight data capture data and send data to api when user click on logout button component independent
+3. switchmap,mergemap,concatmap,
+4. what is trackby in ngfor.
+5. features after angular 16.
+6. what types of interceptors we can use. how many types of interceptors.
+7. did you worked with usint test cases.
+8. Did you worked on micro-frontend
+9. Nx used with ngrx.
+10. Angular material you used?
+11. Spread operators.
+
+
+1.Given an code asked to remove unneccesay thing
+2.dispatch multiple actions from an effect in ngrx
+3.can ngrx effects cause infinite loop
+4.what will happen if u dispatch a same action listening in effects.
+5.how do you handle performance in ngrx application.
+6.how do you debug ngrx application
