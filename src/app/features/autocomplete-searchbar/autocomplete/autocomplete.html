@@ -17,7 +17,7 @@
   @if(isFocus){
   <div class="result-container" >
     <!-- @for(receipe of recepeCache | async; track receipe.id) { -->
-     @for(receipe of resultsOfrecipes(); track receipe.id) {
+     @for(receipe of resultsOfrecipes(); track trackByFn(receipe)) {
       <p class="results">
         {{ receipe.name }}
       </p>
