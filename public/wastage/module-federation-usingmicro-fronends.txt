@@ -1,0 +1,322 @@
+// --- federation.config.js ---
+const { withNativeFederation, shareAll } = require('@angular-architects/native-federation/config');
+
+module.exports = withNativeFederation({
+  name: 'billing-remote',
+
+  exposes: {
+    './Component': './src/app/billing/billing.component.ts',
+    './Routes': './src/app/app.routes.ts',
+  },
+
+  shared: {
+    ...shareAll({
+      singleton: true,
+      strictVersion: true,
+      requiredVersion: 'auto',
+    }),
+  },
+});
+
+// --- src/main.ts ---
+import { initFederation } from '@angular-architects/native-federation';
+
+initFederation()
+  .catch((err) => console.error(err))
+  .then(() => import('./bootstrap'))
+  .catch((err) => console.error(err));
+
+// --- src/bootstrap.ts ---
+import { bootstrapApplication } from '@angular/platform-browser';
+import { appConfig } from './app/app.config';
+import { AppComponent } from './app/app.component';
+
+bootstrapApplication(AppComponent, appConfig)
+  .catch((err) => console.error(err));
+
+// --- src/app/app.config.ts ---
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { provideRouter, withComponentInputBinding, withViewTransitions } from '@angular/router';
+import { provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { routes } from './app.routes';
+import { isDevMode } from '@angular/core';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes, withComponentInputBinding(), withViewTransitions()),
+    provideStore(), // Root store, features add their own state
+    provideEffects(),
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() })
+  ]
+};
+
+// --- src/app/app.routes.ts ---
+import { Routes } from '@angular/router';
+
+export const routes: Routes = [
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'billing'
+  },
+  {
+    path: 'billing',
+    loadComponent: () => import('./billing/billing.component').then(m => m.BillingComponent)
+  }
+];
+
+// --- src/app/app.component.ts ---
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet],
+  template: `
+    <div class="min-h-screen bg-gray-50 text-gray-900">
+      <header class="bg-blue-600 p-4 shadow-md text-white">
+        <h1 class="text-xl font-bold">Billing Remote MFE (Port 4201)</h1>
+      </header>
+      <main class="p-6">
+        <router-outlet />
+      </main>
+    </div>
+  `
+})
+export class AppComponent {}
+
+// --- src/app/billing/store/billing.actions.ts ---
+import { createActionGroup, props, emptyProps } from '@ngrx/store';
+import { Invoice } from '../models/invoice.model';
+
+export const BillingActions = createActionGroup({
+  source: 'Billing',
+  events: {
+    'Load Invoices': emptyProps(),
+    'Load Invoices Success': props<{ invoices: Invoice[] }>(),
+    'Load Invoices Failure': props<{ error: string }>(),
+    'Pay Invoice': props<{ id: string }>(),
+    'Update Filter': props<{ filter: string }>()
+  }
+});
+
+// --- src/app/billing/store/billing.reducer.ts ---
+import { createFeature, createReducer, on } from '@ngrx/store';
+import { BillingActions } from './billing.actions';
+import { Invoice } from '../models/invoice.model';
+
+export interface BillingState {
+  invoices: Invoice[];
+  loading: boolean;
+  error: string | null;
+  filter: string;
+}
+
+const initialState: BillingState = {
+  invoices: [],
+  loading: false,
+  error: null,
+  filter: ''
+};
+
+export const billingFeature = createFeature({
+  name: 'billing',
+  reducer: createReducer(
+    initialState,
+    on(BillingActions.loadInvoices, (state) => ({
+      ...state,
+      loading: true
+    })),
+    on(BillingActions.loadInvoicesSuccess, (state, { invoices }) => ({
+      ...state,
+      invoices,
+      loading: false,
+      error: null
+    })),
+    on(BillingActions.updateFilter, (state, { filter }) => ({
+      ...state,
+      filter
+    })),
+    on(BillingActions.payInvoice, (state, { id }) => ({
+      ...state,
+      invoices: state.invoices.map(inv =>
+        inv.id === id ? { ...inv, status: 'PAID' } : inv
+      )
+    }))
+  ),
+});
+
+// --- src/app/billing/store/billing.selectors.ts ---
+import { createSelector } from '@ngrx/store';
+import { billingFeature } from './billing.reducer';
+
+// Derived selector using the feature object
+export const selectFilteredInvoices = createSelector(
+  billingFeature.selectInvoices,
+  billingFeature.selectFilter,
+  (invoices, filter) => {
+    if (!filter) return invoices;
+    return invoices.filter(inv => inv.customerName.toLowerCase().includes(filter.toLowerCase()));
+  }
+);
+
+// --- src/app/billing/models/invoice.model.ts ---
+export interface Invoice {
+  id: string;
+  customerName: string;
+  amount: number;
+  status: 'PENDING' | 'PAID' | 'OVERDUE';
+  date: string;
+}
+
+// --- src/app/billing/billing.component.ts ---
+import { Component, inject, input, output, effect, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { provideState } from '@ngrx/store';
+import { BillingActions } from './store/billing.actions';
+import { billingFeature } from './store/billing.reducer';
+import { selectFilteredInvoices } from './store/billing.selectors';
+
+@Component({
+  selector: 'app-billing',
+  standalone: true,
+  imports: [CommonModule],
+  // Lazily provide state specifically for this remote entry point
+  providers: [provideState(billingFeature)],
+  template: `
+    <div class="p-4 bg-white rounded shadow">
+      <h2 class="text-2xl font-bold mb-4">Invoices</h2>
+
+      <!-- Control Flow & Signals -->
+      <div class="mb-4 flex gap-2">
+        <input
+          #search
+          type="text"
+          class="border p-2 rounded w-full"
+          placeholder="Search customer..."
+          (input)="updateFilter(search.value)"
+        />
+        <div class="text-sm text-gray-500 self-center">
+          User ID: {{ userId() }}
+        </div>
+      </div>
+
+      @defer (on viewport) {
+        @if (loading()) {
+          <div class="animate-pulse text-blue-500">Loading financial data...</div>
+        } @else {
+          <ul class="space-y-2">
+            @for (inv of invoices(); track inv.id) {
+              <li class="flex justify-between p-3 border rounded hover:bg-gray-50 transition">
+                <div>
+                  <span class="font-bold">{{ inv.customerName }}</span>
+                  <span class="block text-sm text-gray-600">{{ inv.date }}</span>
+                </div>
+                <div class="text-right">
+                  <div class="font-mono">{{ inv.amount | currency }}</div>
+                  <button
+                    class="text-xs px-2 py-1 rounded mt-1"
+                    [ngClass]="{
+                      'bg-green-100 text-green-800': inv.status === 'PAID',
+                      'bg-yellow-100 text-yellow-800': inv.status === 'PENDING'
+                    }"
+                    (click)="pay(inv.id)"
+                    [disabled]="inv.status === 'PAID'">
+                    {{ inv.status }}
+                  </button>
+                </div>
+              </li>
+            } @empty {
+              <li class="text-gray-500 italic">No invoices found.</li>
+            }
+          </ul>
+        }
+      } @placeholder {
+        <div>Loading view...</div>
+      }
+    </div>
+  `
+})
+export class BillingComponent implements OnInit {
+  private store = inject(Store);
+
+  // Signal Inputs (from host shell)
+  readonly userId = input<string>('guest');
+
+  // Signal Outputs
+  readonly invoicePaid = output<string>();
+
+  // Selectors as Signals
+  readonly invoices = this.store.selectSignal(selectFilteredInvoices);
+  readonly loading = this.store.selectSignal(billingFeature.selectLoading);
+
+  constructor() {
+    // Effect to log usage
+    effect(() => {
+      console.log(`Billing Component mounted for user: ${this.userId()}`);
+    });
+  }
+
+  ngOnInit(): void {
+    // Hydrate state with dummy data for demo
+    const dummyData = [
+      { id: '1', customerName: 'Acme Corp', amount: 1200.50, status: 'PENDING', date: '2023-11-01' },
+      { id: '2', customerName: 'Stark Ind', amount: 95000.00, status: 'PAID', date: '2023-10-15' },
+    ] as any;
+
+    this.store.dispatch(BillingActions.loadInvoicesSuccess({ invoices: dummyData }));
+  }
+
+  updateFilter(term: string) {
+    this.store.dispatch(BillingActions.updateFilter({ filter: term }));
+  }
+
+  pay(id: string) {
+    this.store.dispatch(BillingActions.payInvoice({ id }));
+    this.invoicePaid.emit(id);
+  }
+}
+
+// --- tailwind.config.js ---
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./src/**/*.{html,ts}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+
+// --- angular.json ---
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "billing-remote": {
+      "projectType": "application",
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-architects/native-federation:build",
+          "options": { }
+        },
+        "serve": {
+          "builder": "@angular-architects/native-federation:serve",
+          "options": {
+            "port": 4201
+          }
+        }
+      }
+    }
+  }
+}

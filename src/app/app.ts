@@ -1,5 +1,10 @@
 import { Component, signal, ViewEncapsulation, WritableSignal } from '@angular/core';
 import { RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Grocery } from './features/ngrx/models/grocery.model';
+import { selectByGroceryTpye, selectGroceries } from './features/ngrx/store/selector/grocer.selector';
+import { groceryAction } from './features/ngrx/store/actions/grocery.action';
+import { medGroceryAction } from './features/medicine-ngrx/store/actions/medgros.actions';
 
 
 @Component({
@@ -19,7 +24,17 @@ export class App {
   todos = signal<string[]>([]);
 isMenuActive = false;
 
+  constructor(private store:Store<{gorcery:any[]}>){
+    // code for chech memoization
+    // store.select(selectGroceries).subscribe(res=>{
+    //   console.log('data2', res)
+    // })
 
+    this.store.dispatch(groceryAction.loadGroceris())
+    this.store.dispatch(medGroceryAction.loadMedGroceris())
+
+
+  }
   addTodo(){
    if(this.newTodo.trim()){
     this.todos.update(list=>[...list,this.newTodo])
