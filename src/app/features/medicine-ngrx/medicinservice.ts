@@ -2,13 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class GroceryService {
-
+export class Medicinservice {
   constructor(private http:HttpClient) {}
-
-  fetchAllGroceries(){
-    return this.http.get("http://localhost:5001/groceries")
+    fetchAllMedGroceries(){
+    return this.http.get("http://localhost:5000/medicines")
   }
 }

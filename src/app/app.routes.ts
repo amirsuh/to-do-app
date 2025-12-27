@@ -69,6 +69,13 @@ export const routes: Routes = [
      return import('./features/ngrx/ngrx-main-comp/ngrx-main-comp').then(c=>c.NgrxMainComp)
     },data: { reuse: false },
   },
+  {
+    path: ROUTE_CONSTANTS.MEDICINENGRX,title:ROUTE_CONSTANTS.MEDICINENGRX,
+    loadComponent(){
+     return import('./features/medicine-ngrx/medicine/medicine').then(c=>c.Medicine)
+    },data: { reuse: false },
+  },
+
 
   { path: ROUTE_CONSTANTS.ANGULARMATERIAL,title:ROUTE_CONSTANTS.ANGULARMATERIAL, component: MaterilaDesigns,data: { reuse: true },},
   { path: ROUTE_CONSTANTS.ADMIN,title:ROUTE_CONSTANTS.ADMIN, component: Admin,data: { reuse: true },

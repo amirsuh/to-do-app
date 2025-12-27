@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "apiServer": "json-server db.json --port 5000"
+    "apiServer": "json-server db.json --port 5001",
+    "medApiServer": "json-server medicine.json --port 5000"
   },
   "prettier": {
     "printWidth": 100,

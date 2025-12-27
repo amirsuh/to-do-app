@@ -13,6 +13,9 @@ import { authInterceptorInterceptor } from './core/interceptors/auth-interceptor
 import { grocerReducer } from './features/ngrx/store/reducer/grocery.reducer';
 import { bucketReducer } from './features/ngrx/store/reducer/bucket.reducer';
 import { MoviesEffects } from './features/ngrx/store/effects/grocery.effect';
+import { medgrosReducer } from './features/medicine-ngrx/store/reducer/medgroc.reducer';
+import { medBuckerReducer } from './features/medicine-ngrx/store/reducer/medbucket.reducer';
+import { MoviesEffects2 } from './features/medicine-ngrx/store/effects/medgros.effect';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
@@ -20,7 +23,7 @@ export const appConfig: ApplicationConfig = {
 
     provideRouter(routes, withRouterConfig({ onSameUrlNavigation: 'reload' })),
     { provide: RouteReuseStrategy, useClass: CustomReuseStrategy },
-    provideStore({gorcery:grocerReducer,myBucket:bucketReducer}),provideEffects(MoviesEffects),provideStoreDevtools({
+    provideStore({gorcery:grocerReducer,myBucket:bucketReducer,medGrocery:medgrosReducer,medBucket:medBuckerReducer}),provideEffects(MoviesEffects,MoviesEffects2),provideStoreDevtools({
       maxAge: 25, // Retains last 25 states
       logOnly: !isDevMode(), // Restrict extension to log-only mode
       autoPause: true, // Pauses recording actions and state changes when the extension window is not open

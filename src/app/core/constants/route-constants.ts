@@ -9,5 +9,6 @@ export const ROUTE_CONSTANTS = {
   ROUTING:'routing',
   PROFILE:'profile',
   PAGINATION:'pagination',
-  NGRX:'ngrx'
+  NGRX:'ngrx',
+  MEDICINENGRX:'medicinengrx'
 }
