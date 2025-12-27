@@ -4,6 +4,7 @@ import { Grocery } from '../../models/grocery.model';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { addToBucket, removeFromBucket } from '../../store/actions/bucket.action';
+import { selectByGroceryTpye, selectGroceries } from '../../store/selector/grocer.selector';
 
 
 @Component({
@@ -16,14 +17,27 @@ import { addToBucket, removeFromBucket } from '../../store/actions/bucket.action
 export class GroceryComponent {
 
   groceries$?:Observable<Grocery[]>;
+  // groceries$:Signal<Grocery[]>;
+
+  filteredGoceries$?:Observable<Grocery[]>
+    // filteredGoceries$?:Signal<Grocery[]>
 
   constructor(private store:Store<{gorcery:Grocery[]}>){
-     this.groceries$ = store.select("gorcery")
+    // this.groceries$ = store.selectSignal(selectGroceries)
+    this.groceries$ = store.select(selectGroceries)
+
+    // To understand memoization same did in app.ts
+    // store.select(selectByGroceryTpye).subscribe(res=>{
+    //   console.log('data2', res)
+    // })
   }
 
 
   onTypeChange(event: Event){
 
+    const selectedtype  =(event.target as HTMLSelectElement).value
+    if(selectedtype) this.filteredGoceries$ = this.store.select(selectByGroceryTpye(selectedtype))
+    else this.filteredGoceries$=undefined
   }
 
 

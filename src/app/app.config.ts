@@ -12,6 +12,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptorInterceptor } from './core/interceptors/auth-interceptor-interceptor';
 import { grocerReducer } from './features/ngrx/store/reducer/grocery.reducer';
 import { bucketReducer } from './features/ngrx/store/reducer/bucket.reducer';
+import { MoviesEffects } from './features/ngrx/store/effects/grocery.effect';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
@@ -19,7 +20,7 @@ export const appConfig: ApplicationConfig = {
 
     provideRouter(routes, withRouterConfig({ onSameUrlNavigation: 'reload' })),
     { provide: RouteReuseStrategy, useClass: CustomReuseStrategy },
-    provideStore({gorcery:grocerReducer,myBucket:bucketReducer}),provideEffects(),provideStoreDevtools({
+    provideStore({gorcery:grocerReducer,myBucket:bucketReducer}),provideEffects(MoviesEffects),provideStoreDevtools({
       maxAge: 25, // Retains last 25 states
       logOnly: !isDevMode(), // Restrict extension to log-only mode
       autoPause: true, // Pauses recording actions and state changes when the extension window is not open

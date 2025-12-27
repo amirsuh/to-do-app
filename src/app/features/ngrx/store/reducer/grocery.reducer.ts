@@ -1,27 +1,33 @@
-import { createReducer } from "@ngrx/store";
+import { createReducer, on } from "@ngrx/store";
 import { Grocery } from "../../models/grocery.model";
+import { groceryAction } from "../actions/grocery.action";
 
-const initialState:Grocery[] = [
-  {
-    id: 1,
-    name: 'milk',
-    type: 'fruit',
-  },
-  {
-    id: 2,
-    name: 'Banana',
-    type: 'fruit',
-  },
-  {
-    id: 3,
-    name: 'Layc chip',
-    type: 'snacks',
-  },
-  {
-    id: 4,
-    name: 'dorita',
-    type: 'snacks',
-  },
-];
+// const initialState:Grocery[] = [
+//   {
+//     id: 1,
+//     name: 'milk',
+//     type: 'fruit',
+//   },
+//   {
+//     id: 2,
+//     name: 'Banana',
+//     type: 'fruit',
+//   },
+//   {
+//     id: 3,
+//     name: 'Layc chip',
+//     type: 'snacks',
+//   },
+//   {
+//     id: 4,
+//     name: 'dorita',
+//     type: 'snacks',
+//   },
+// ];
+const initialState:Grocery[] = []
+export const grocerReducer=createReducer(initialState,on(groceryAction.loadGroceriesSuccess,(state,action)=>{
+return action.payload
+}),on(groceryAction.loadGroceriesFailure,(state,action)=>{
+return []
+}))
 
-export const grocerReducer=createReducer(initialState)
