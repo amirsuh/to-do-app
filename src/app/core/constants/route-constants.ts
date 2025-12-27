@@ -8,5 +8,6 @@ export const ROUTE_CONSTANTS = {
   ADMIN:'admin',
   ROUTING:'routing',
   PROFILE:'profile',
-  PAGINATION:'pagination'
+  PAGINATION:'pagination',
+  NGRX:'ngrx'
 }

@@ -8,6 +8,7 @@ import { Admin } from './features/routing/component/admin/admin';
 import { adminLoadGuard } from './core/guards/canload/admin-load-guard';
 import { Profile } from './features/routing/component/profile/profile';
 import { userResolver } from './core/guards/user-resolver';
+import { NgrxMainComp } from './features/ngrx/ngrx-main-comp/ngrx-main-comp';
 async function loadrouteComponent() {
   // return import('./features/routing/routing').then((m) => m.Routing);
   const c = await import('./features/routing/routing');
@@ -61,6 +62,12 @@ export const routes: Routes = [
   {
     path: ROUTE_CONSTANTS.ROUTING,title:ROUTE_CONSTANTS.ROUTING,
     loadComponent:loadrouteComponent,data: { reuse: false },
+  },
+   {
+    path: ROUTE_CONSTANTS.NGRX,title:ROUTE_CONSTANTS.NGRX,
+    loadComponent(){
+     return import('./features/ngrx/ngrx-main-comp/ngrx-main-comp').then(c=>c.NgrxMainComp)
+    },data: { reuse: false },
   },
 
   { path: ROUTE_CONSTANTS.ANGULARMATERIAL,title:ROUTE_CONSTANTS.ANGULARMATERIAL, component: MaterilaDesigns,data: { reuse: true },},
