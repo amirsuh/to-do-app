@@ -16,7 +16,31 @@
       <li><a routerLinkActive="active-link" routerLink="behvssignal">SSR</a></li>
       <li><a routerLinkActive="active-link" routerLink="pagination">pagination</a></li>
       <li><a routerLinkActive="active-link" routerLink="ngrx">ngrx</a></li>
-            <li><a routerLinkActive="active-link" routerLink="medicinengrx">medicine ngrx</a></li>
+      <li><a routerLinkActive="active-link" routerLink="medicinengrx">medicine ngrx</a></li>
+      <!-- <mat-form-field appearance="fill">
+  <mat-label>Select Country</mat-label>
+  <mat-select value="selectedCountry">
+    <mat-option >
+      Routing
+    </mat-option>
+    <mat-option >
+      Routing
+    </mat-option>
+  </mat-select>
+</mat-form-field> -->
+
+      <div class="menu-wrapper" (click)="toggleDropdown($event)">
+        <span class="menu-label">Menus ▾</span>
+
+        <ul class="menu-dropdown" *ngIf="isOpen" >
+          <ng-container *ngFor="let item of menus">
+          <li value="{{item}}" (click)="gotoFromDrpDwn(item)">
+            {{ item.label }}
+          </li>
+          </ng-container>
+
+        </ul>
+      </div>
 
 
 

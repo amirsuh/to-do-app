@@ -10,5 +10,8 @@ export const ROUTE_CONSTANTS = {
   PROFILE:'profile',
   PAGINATION:'pagination',
   NGRX:'ngrx',
-  MEDICINENGRX:'medicinengrx'
+  MEDICINENGRX:'medicinengrx',
+  ROUTEADMIN: 'routeadmin',
+  LIST: 'list',
+  DETAIL: 'detail'
 }
