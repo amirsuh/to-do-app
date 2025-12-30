@@ -11,20 +11,13 @@ import {
 } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import {
-  NavigationCancel,
-  Event,
-  NavigationEnd,
-  NavigationError,
-  NavigationStart,
-  Router,
-} from '@angular/router';
+import { NavigationCancel, Event, NavigationEnd, NavigationError, NavigationStart, Router, RouterOutlet } from '@angular/router';
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
 import { Authservice } from '../../core/services/auth/authservice';
 
 @Component({
   selector: 'app-routing',
-  imports: [MatToolbar, CommonModule, MatProgressSpinner],
+  imports: [MatToolbar, CommonModule, MatProgressSpinner, RouterOutlet],
   templateUrl: './routing.html',
   styleUrl: './routing.scss',
 })

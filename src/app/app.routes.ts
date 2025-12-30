@@ -62,6 +62,28 @@ export const routes: Routes = [
   {
     path: ROUTE_CONSTANTS.ROUTING,title:ROUTE_CONSTANTS.ROUTING,
     loadComponent:loadrouteComponent,data: { reuse: false },
+    children: [
+    {
+      path: 'admin',
+      loadComponent: () =>
+        import('../app/features/routing/component/admin/admin').then(m => m.Admin)
+    },
+    {
+      path: 'home',
+      loadComponent: () =>
+        import('../app/features/routing/component/home/home').then(m => m.Home)
+    },
+    {
+      path: 'lazy',
+      loadComponent: () =>
+        import('../app/features/routing/component/lazy/lazy').then(m => m.Lazy)
+    },
+    {
+      path: 'profile',
+      loadComponent: () =>
+        import('../app/features/routing/component/profile/profile').then(m => m.Profile)
+    }
+  ]
   },
    {
     path: ROUTE_CONSTANTS.NGRX,title:ROUTE_CONSTANTS.NGRX,
