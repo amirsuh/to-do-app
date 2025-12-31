@@ -1,1 +1,28 @@
-<p>profile works!</p>
+<div class="body">
+  <input type="text" placeholder="search here..." [(ngModel)]="searchText" (input)="onSearchChange($event.target.value)">
+      <table>
+  <caption>Users Table</caption>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th (click)="toggleSort('title')">Title</th>
+      <th (click)="toggleSort('description')">Description</th>
+      <th (click)="toggleSort('brand')">Brand</th>
+    </tr>
+  </thead>
+  <ng-container *ngFor="let product of (filteredList$ |async) ?? (productList$ | async);; let i = index">
+    <!-- <p>{{product.title}}</p> -->
+
+
+  <tbody>
+    <tr>
+      <td >{{i}}</td>
+      <td >{{product.title}}</td>
+      <td>{{product.description}}</td>
+      <td>{{product.brand}}</td>
+    </tr>
+  </tbody>
+
+  </ng-container>
+  </table>
+</div>

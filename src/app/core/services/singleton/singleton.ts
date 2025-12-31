@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, Observable, of } from 'rxjs';
+import { Product } from '../../../features/routing/component/model.ts/product.model';
+import { Products } from '../../../features/dummyjson/interface/pagination.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -54,5 +56,12 @@ export class Singleton {
   }
   isAuthenticated(): boolean {
     return this.user !== null;
+  }
+
+  getPrdoctList():Observable<Product[]>{
+    return this.http.get<Products>('https://dummyjson.com/products').pipe(
+      map(
+        product=>product.products
+      ))
   }
 }
