@@ -1,0 +1,150 @@
+Steps to Implement:
+
+Create the CardComponent:
+
+Use @Input to pass data to the component (e.g., the list of buttons).
+
+Use ng-content or ng-template to provide slots for dynamic content like buttons.
+
+Example Implementation:
+
+CardComponent (Child):
+
+import { Component, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-card',
+  templateUrl: './card.component.html',
+  styleUrls: ['./card.component.css']
+})
+export class CardComponent {
+  @Input() title: string = '';  // Title for the card
+  @Input() description: string = '';  // Description for the card
+  @Input() buttons: any[] = [];  // Array of buttons (can be of type {label: string, action: Function})
+}
+
+
+CardComponent HTML Template (Child):
+
+<div class="card">
+  <div class="card-header">
+    <h3>{{ title }}</h3>
+  </div>
+  <div class="card-body">
+    <p>{{ description }}</p>
+    <div class="card-buttons">
+      <!-- Iterate through the buttons passed by the parent -->
+      <button *ngFor="let button of buttons" (click)="button.action()">
+        {{ button.label }}
+      </button>
+    </div>
+  </div>
+</div>
+
+
+Here, the buttons array contains objects, each with a label (the text to show on the button) and an action (the function to execute when clicked).
+
+CardComponent Styles (Child):
+
+.card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  width: 300px;
+}
+
+.card-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.card-body {
+  padding: 10px 0;
+}
+
+.card-buttons {
+  margin-top: 10px;
+}
+
+.card-buttons button {
+  margin-right: 5px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+
+Parent Component (Parent):
+
+Now, in the Parent Component, you can pass dynamic buttons as an array to the CardComponent.
+
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-parent',
+  templateUrl: './parent.component.html',
+  styleUrls: ['./parent.component.css']
+})
+export class ParentComponent {
+  cardTitle = 'Sample Card';
+  cardDescription = 'This is a sample card description.';
+
+  // Define buttons dynamically here
+  cardButtons = [
+    { label: 'Edit', action: this.edit },
+    { label: 'Delete', action: this.delete }
+  ];
+
+  edit() {
+    console.log('Edit clicked');
+  }
+
+  delete() {
+    console.log('Delete clicked');
+  }
+}
+
+
+Parent Component HTML (Parent):
+
+<app-card [title]="cardTitle" [description]="cardDescription" [buttons]="cardButtons"></app-card>
+
+
+Here, we’re passing the title, description, and buttons array to the CardComponent. The buttons array contains objects with label and action properties that correspond to the dynamic buttons.
+
+Explanation:
+
+Dynamic Buttons: The CardComponent accepts an array of button objects. Each object has a label for the button text and an action which is a function (method) that will be called when the button is clicked.
+
+ngFor: The buttons are rendered dynamically by iterating through the buttons array using *ngFor.
+
+Input Binding: The CardComponent accepts the data (like title, description, and buttons) from the parent component via @Input properties.
+
+Benefits:
+
+Reusability: This component is highly reusable. You can pass any dynamic data (buttons or other content) to it.
+
+Separation of Concerns: The CardComponent is focused only on rendering the card structure and doesn't need to know about the specific functionality of the buttons.
+
+Flexibility: The parent component has full control over the buttons, and new buttons can be added easily without modifying the CardComponent.
+
+Alternative Approach (Using ng-content):
+
+If you want even more flexibility and allow the parent to control the exact layout of the card, including the buttons, you can use ng-content.
+
+<div class="card">
+  <div class="card-header">
+    <h3>{{ title }}</h3>
+  </div>
+  <div class="card-body">
+    <p>{{ description }}</p>
+    <ng-content></ng-content>  <!-- Slot for dynamic content like buttons -->
+  </div>
+</div>
+
+
+Now in the parent component:
+
+<app-card [title]="cardTitle" [description]="cardDescription">
+  <button (click)="edit()">Edit</button>
+  <button (click)="delete()">Delete</button>
+</app-card>

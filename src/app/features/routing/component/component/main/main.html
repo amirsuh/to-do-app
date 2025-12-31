@@ -1,0 +1,15 @@
+<app-card>
+  <h2>Angular Content Projection</h2>
+  <p>Reusable components made easy.</p>
+  <app-child/>
+</app-card>
+<app-my-comp-dialog>
+  <span appChangecolor="green">with data</span>
+   <div header><h3>John Doe</h3></div>
+  <p>Frontend Engineer at Angular Corp.</p>
+  <div footer><button>Edit</button></div>
+</app-my-comp-dialog>
+<app-my-comp-dialog>
+  <span>without data default from dialog componet</span>
+  <div  appChangecolor="blue" header><h2>Custom Header</h2></div>
+</app-my-comp-dialog>

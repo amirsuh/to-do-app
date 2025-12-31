@@ -1,1 +1,7 @@
 <p>home works!</p>
+<app-admin [title]="cardTitle" [description]="cardDescription" [buttons]="cardButtons"></app-admin>
+<app-lazy [title]="cardTitle" [description]="cardDescription">
+  <button (click)="edit()">Edit</button>
+  <button (click)="delete()">Delete</button>
+  <a href="">test</a>
+</app-lazy>

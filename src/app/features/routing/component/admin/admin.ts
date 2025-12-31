@@ -1,14 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Singleton } from '../../../../core/services/singleton/singleton';
+import { CommonModule } from '@angular/common';
+import { Main } from "../component/main/main";
 
 @Component({
   selector: 'app-admin',
-  imports: [],
+  imports: [CommonModule, Main],
   templateUrl: './admin.html',
   styleUrl: './admin.scss',
 })
 export class Admin {
-
+  @Input() title: string = '';  // Title for the card
+  @Input() description: string = '';  // Description for the card
+  @Input() buttons: any[] = [];  // Array of buttons (can be of type {label: string, action: Function})
 
   constructor(private single:Singleton){
    single.increment()
