@@ -1,0 +1,24 @@
+<!-- <div class="dialog">
+      <div class="dialog-header">
+        <ng-content select="[header]"/>
+      </div>
+      <div class="dialog-body">
+        <ng-content/>
+      </div>
+      <div class="dialog-footer">
+        <ng-content select="[footer]"/>
+      </div>
+    </div> -->
+
+
+    <div class="dialog-header">
+      <ng-content select="[header]">Default Title</ng-content>
+    </div>
+    <div class="dialog-body">
+      <ng-content>Default body content</ng-content>
+    </div>
+    <div class="dialog-footer">
+      <ng-content select="[footer]">
+        <button>Upgrade</button>
+      </ng-content>
+    </div>
