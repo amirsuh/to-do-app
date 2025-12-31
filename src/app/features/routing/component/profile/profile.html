@@ -1,5 +1,5 @@
 <div class="body">
-  <input type="text" placeholder="search here..." [(ngModel)]="searchText" (input)="onSearchChange($event.target.value)">
+  <input type="text" placeholder="search here..." [(ngModel)]="searchText" (ngModelChange)="onSearchChange($event.target)">
       <table>
   <caption>Users Table</caption>
   <thead>

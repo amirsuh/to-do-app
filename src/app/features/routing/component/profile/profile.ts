@@ -44,7 +44,8 @@ export class Profile {
   }
 
   onSearchChange(event:any){
-    this.searchSubject.next(event)
+    let text =  event ? event:this.searchText
+    this.searchSubject.next(text)
   //  let searchTxt = event
   //  this.filteredList$ = this.productList$?.pipe(map(items=>items.filter(item => {
   //     const brand = (item.brand || '').toLowerCase();
