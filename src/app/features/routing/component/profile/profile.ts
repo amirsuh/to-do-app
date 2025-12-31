@@ -5,10 +5,11 @@ import { debounceTime, filter, map, Observable, Subject } from 'rxjs';
 import { Product } from '../model.ts/product.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { PhonePipe } from "../../../../shared/pipes/phone/phonepipe-pipe";
 
 @Component({
   selector: 'app-profile',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule, PhonePipe],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
 })
