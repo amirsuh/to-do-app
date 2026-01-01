@@ -11,6 +11,40 @@
     </div> -->
 
 
+<div class="dialog-header">
+      <ng-content select="[header]">Default Title</ng-content>
+    </div>
+    <div class="dialog-body">
+      <ng-content>Default body content</ng-content>
+    </div>
+    <div class="dialog-footer">
+      <ng-content select="[footer]">
+        <button>Upgrade</button>
+      </ng-content>
+    </div>
+    <ng-content select="card-title"/>
+    <ng-content/>
+
+
+
+
+<!-- <div class="card-container">
+  <div class="card-header">
+    <ng-content select="[header]">Default Title</ng-content>
+  </div>
+  <div class="card-body">
+    <ng-content>Default body content</ng-content>
+  </div>
+  <div class="card-footer">
+    <ng-content select="[footer]">
+      <button>Upgrade</button>
+    </ng-content>
+  </div>
+</div> -->
+
+
+<!-- <div class="card-container">
+  <div class="card">
     <div class="dialog-header">
       <ng-content select="[header]">Default Title</ng-content>
     </div>
@@ -22,3 +56,62 @@
         <button>Upgrade</button>
       </ng-content>
     </div>
+    <ng-content select="card-title"></ng-content>
+    <ng-content></ng-content>
+  </div>
+
+
+
+  Add more cards as needed
+</div> -->
+
+<!-- <div class="card-container">
+  <div class="card">
+    <div class="dialog-header">
+      <ng-content select="[header]">Default Title</ng-content>
+    </div>
+    <div class="dialog-body">
+      <ng-content>Default body content</ng-content>
+    </div>
+    <div class="dialog-footer">
+      <ng-content select="[footer]">
+        <button>Upgrade</button>
+      </ng-content>
+    </div>
+    <ng-content select="card-title"></ng-content>
+    <ng-content></ng-content>
+  </div>
+
+  <div class="card">
+    <div class="dialog-header">
+      <ng-content select="[header]">Default Title 2</ng-content>
+    </div>
+    <div class="dialog-body">
+      <ng-content>Default body content 2</ng-content>
+    </div>
+    <div class="dialog-footer">
+      <ng-content select="[footer]">
+        <button>Upgrade</button>
+      </ng-content>
+    </div>
+    <ng-content select="card-title"></ng-content>
+    <ng-content></ng-content>
+  </div>
+
+  <div class="card">
+    <div class="dialog-header">
+      <ng-content select="[header]">Default Title 3</ng-content>
+    </div>
+    <div class="dialog-body">
+      <ng-content>Default body content 3</ng-content>
+    </div>
+    <div class="dialog-footer">
+      <ng-content select="[footer]">
+        <button>Upgrade</button>
+      </ng-content>
+    </div>
+    <ng-content select="card-title"></ng-content>
+    <ng-content></ng-content>
+  </div>
+
+</div> -->

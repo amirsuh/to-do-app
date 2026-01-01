@@ -64,4 +64,8 @@ export class Singleton {
         product=>product.products
       ))
   }
+
+  fetch<T>(url: string): Observable<T[]> {
+    return this.http.get<T[]>(url);
+  }
 }
