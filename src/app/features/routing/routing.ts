@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatGridTile, MatGridList } from '@angular/material/grid-list';
 import {
@@ -25,6 +25,7 @@ export class Routing {
   routingEvents: any;
   loading: boolean = false;
   lastNav:any
+   isOpenSignal =  signal(false);
   constructor(public router: Router,private auth: Authservice) {
     const navigation= this.router.lastSuccessfulNavigation;
     this.lastNav = this.router.lastSuccessfulNavigation;

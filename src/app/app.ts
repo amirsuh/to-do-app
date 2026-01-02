@@ -31,6 +31,8 @@ export class App {
   isMenuActive = false;
   selectedCountry: any;
   isOpen = false;
+  isOpenSignal =  signal(false);
+
 
   menus = [
     { label: 'Dashboard', selected: false },
@@ -38,6 +40,7 @@ export class App {
     { label: 'Reports', selected: false },
     { label: 'Settings', selected: false },
   ];
+  toMenusSignal = signal(this.menus);
   constructor(private router: Router, private store: Store<{ gorcery: any[] }>) {
     // code for chech memoization
     // store.select(selectGroceries).subscribe(res=>{
