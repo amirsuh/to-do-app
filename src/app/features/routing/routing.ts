@@ -14,10 +14,11 @@ import { CommonModule } from '@angular/common';
 import { NavigationCancel, Event, NavigationEnd, NavigationError, NavigationStart, Router, RouterOutlet } from '@angular/router';
 import { MatProgressSpinner } from "@angular/material/progress-spinner";
 import { Authservice } from '../../core/services/auth/authservice';
+import { UserForm } from "../crud/user-form/user-form";
 
 @Component({
   selector: 'app-routing',
-  imports: [MatToolbar, CommonModule, MatProgressSpinner, RouterOutlet],
+  imports: [MatToolbar, CommonModule, MatProgressSpinner, RouterOutlet, UserForm],
   templateUrl: './routing.html',
   styleUrl: './routing.scss',
 })
