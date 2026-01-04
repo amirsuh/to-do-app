@@ -1,10 +1,11 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { RxjsandobservablesService } from '../../../rxjsandobservables/service/rxjsandobservables';
 import { ProgressB } from "../../../progress-bar/progress-b/progress-b";
+import { BatchList } from "../../../batch-list/batch-list";
 
 @Component({
   selector: 'app-dashboard',
-  imports: [ProgressB],
+  imports: [ProgressB, BatchList],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })

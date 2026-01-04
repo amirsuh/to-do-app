@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment.development';
-import { Api_Methods } from '../constant/Global_constant';
-import { BatchModel } from '../model/class/user.model';
 import { Observable } from 'rxjs';
-import { IAPIResponse } from '../model/interface/Common.model';
+import { IAPIResponse } from '../../model/interface/Common.model';
+import { BatchModel } from '../../model/class/user.model';
+import { environment } from '../../../../environments/environment.development';
+import { Api_Methods } from '../../constant/Global_constant';
 
 @Injectable({
   providedIn: 'root',
