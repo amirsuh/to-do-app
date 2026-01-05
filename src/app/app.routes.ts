@@ -9,6 +9,7 @@ import { adminLoadGuard } from './core/guards/canload/admin-load-guard';
 import { Profile } from './features/routing/component/profile/profile';
 import { userResolver } from './core/guards/user-resolver';
 import { NgrxMainComp } from './features/ngrx/ngrx-main-comp/ngrx-main-comp';
+import { BatchList } from './features/Batches/batch-list/batch-list';
 async function loadrouteComponent() {
   // return import('./features/routing/routing').then((m) => m.Routing);
   const c = await import('./features/routing/routing');
@@ -82,7 +83,9 @@ export const routes: Routes = [
       path: 'profile',title: 'profile',
       loadComponent: () =>
         import('../app/features/routing/component/profile/profile').then(m => m.Profile)
-    }
+    },
+    { path: 'batches', component: BatchList ,title: 'batches List' },
+
   ]
   },
    {
