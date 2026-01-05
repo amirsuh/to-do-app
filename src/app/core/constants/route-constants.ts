@@ -13,5 +13,6 @@ export const ROUTE_CONSTANTS = {
   MEDICINENGRX:'medicinengrx',
   ROUTEADMIN: 'routeadmin',
   LIST: 'list',
-  DETAIL: 'detail'
+  DETAIL: 'detail',
+  DEFAULT:'defaults'
 }

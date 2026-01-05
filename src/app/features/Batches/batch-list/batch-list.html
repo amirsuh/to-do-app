@@ -1,0 +1,86 @@
+<mat-card>
+  <div class="list-header">
+    <button mat-raised-button color="primary" (click)="addBatch()">
+      <mat-icon>add</mat-icon> Add Batch
+    </button>
+
+    <mat-form-field appearance="outline" class="search">
+      <mat-label>Search by name</mat-label>
+      <input matInput placeholder="Type to filter..." (input)="search.set($any($event.target).value)">
+      <button mat-icon-button matSuffix aria-label="Clear" (click)="search.set('')">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <div class="table-wrap">
+    <table mat-table  class="mat-elevation-z1">
+
+      <!-- ID -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let element">{{element.id}}</td>
+      </ng-container>
+
+      <!-- Name -->
+      <ng-container matColumnDef="batchName">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let element">{{element.batchName}}</td>
+      </ng-container>
+
+      <!-- Start -->
+      <ng-container matColumnDef="startDate">
+        <th mat-header-cell *matHeaderCellDef>Start</th>
+        <td mat-cell *matCellDef="let element">{{ element.startDate | date:'dd-MM-yy' }}</td>
+      </ng-container>
+
+      <!-- End -->
+      <ng-container matColumnDef="endDate">
+        <th mat-header-cell *matHeaderCellDef>End</th>
+        <td mat-cell *matCellDef="let element">{{ element.endDate | date:'dd-MM-yy' }}</td>
+      </ng-container>
+
+      <!-- Status -->
+      <ng-container matColumnDef="isActive">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let element">
+          <span class="badge" [class.active]="element.isActive" [class.inactive]="!element.isActive">
+            {{ element.isActive ? 'Active' : 'Inactive' }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Actions -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-stroked-button color="primary" (click)="editBatch(element)">Edit</button>
+          <button mat-stroked-button color="warn" (click)="deleteBatch(element.id)">Delete</button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <tr class="empty" *ngIf="paged().length === 0">
+        <td colspan="6">No batches found</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <button mat-icon-button (click)="prevPage()" [disabled]="pageIndex()===0">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    <ng-container *ngFor="let page of [].constructor(pageCount()); let i = index">
+      <button mat-button [class.active]="i===pageIndex()" (click)="gotoPage(i)">
+        {{i + 1}}
+      </button>
+    </ng-container>
+
+    <button mat-icon-button (click)="nextPage()" [disabled]="pageIndex()===pageCount()-1 || pageCount()===0">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+</mat-card>

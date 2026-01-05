@@ -9,6 +9,7 @@ import { adminLoadGuard } from './core/guards/canload/admin-load-guard';
 import { Profile } from './features/routing/component/profile/profile';
 import { userResolver } from './core/guards/user-resolver';
 import { NgrxMainComp } from './features/ngrx/ngrx-main-comp/ngrx-main-comp';
+import { BatchList } from './features/Batches/batch-list/batch-list';
 async function loadrouteComponent() {
   // return import('./features/routing/routing').then((m) => m.Routing);
   const c = await import('./features/routing/routing');
@@ -64,25 +65,27 @@ export const routes: Routes = [
     loadComponent:loadrouteComponent,data: { reuse: false },
     children: [
     {
-      path: 'admin',
+      path: 'admin',title: 'admin',
       loadComponent: () =>
         import('../app/features/routing/component/admin/admin').then(m => m.Admin)
     },
     {
-      path: 'home',
+      path: 'home',title: 'home',
       loadComponent: () =>
         import('../app/features/routing/component/home/home').then(m => m.Home)
     },
     {
-      path: 'lazy',
+      path: 'lazy',title: 'lazy',
       loadComponent: () =>
         import('../app/features/routing/component/lazy/lazy').then(m => m.Lazy)
     },
     {
-      path: 'profile',
+      path: 'profile',title: 'profile',
       loadComponent: () =>
         import('../app/features/routing/component/profile/profile').then(m => m.Profile)
-    }
+    },
+    { path: 'batches', component: BatchList ,title: 'batches List' },
+
   ]
   },
    {
@@ -106,7 +109,7 @@ export const routes: Routes = [
   { path: ROUTE_CONSTANTS.PROFILE,title:ROUTE_CONSTANTS.PROFILE, component: Profile,resolve: { user: userResolver },data: { reuse: true },},
 
   // Wildcard route for 404 page
-  { path: '**', loadComponent:()=>import('./shared/components/pagenotfoundcomponent/pagenotfoundcomponent').then(c=>c.Pagenotfoundcomponent) },
+  { path: '**',title:ROUTE_CONSTANTS.DEFAULT, loadComponent:()=>import('./shared/components/pagenotfoundcomponent/pagenotfoundcomponent').then(c=>c.Pagenotfoundcomponent) },
 
 ];
 
