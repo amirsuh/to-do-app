@@ -64,22 +64,22 @@ export const routes: Routes = [
     loadComponent:loadrouteComponent,data: { reuse: false },
     children: [
     {
-      path: 'admin',
+      path: 'admin',title: 'admin',
       loadComponent: () =>
         import('../app/features/routing/component/admin/admin').then(m => m.Admin)
     },
     {
-      path: 'home',
+      path: 'home',title: 'home',
       loadComponent: () =>
         import('../app/features/routing/component/home/home').then(m => m.Home)
     },
     {
-      path: 'lazy',
+      path: 'lazy',title: 'lazy',
       loadComponent: () =>
         import('../app/features/routing/component/lazy/lazy').then(m => m.Lazy)
     },
     {
-      path: 'profile',
+      path: 'profile',title: 'profile',
       loadComponent: () =>
         import('../app/features/routing/component/profile/profile').then(m => m.Profile)
     }
@@ -106,7 +106,7 @@ export const routes: Routes = [
   { path: ROUTE_CONSTANTS.PROFILE,title:ROUTE_CONSTANTS.PROFILE, component: Profile,resolve: { user: userResolver },data: { reuse: true },},
 
   // Wildcard route for 404 page
-  { path: '**', loadComponent:()=>import('./shared/components/pagenotfoundcomponent/pagenotfoundcomponent').then(c=>c.Pagenotfoundcomponent) },
+  { path: '**',title:ROUTE_CONSTANTS.DEFAULT, loadComponent:()=>import('./shared/components/pagenotfoundcomponent/pagenotfoundcomponent').then(c=>c.Pagenotfoundcomponent) },
 
 ];
 
