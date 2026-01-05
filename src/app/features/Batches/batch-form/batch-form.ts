@@ -5,10 +5,17 @@ import { BatchModel } from '../../../core/model/class/user.model';
 import { MatFormField, MatLabel, MatError } from "@angular/material/form-field";
 import { MatSelect, MatOption } from "@angular/material/select";
 import { CommonModule } from '@angular/common';
+import { MatDatepickerToggle, MatDatepicker } from "@angular/material/datepicker";
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+
 
 @Component({
   selector: 'app-batch-form',
-  imports: [MatDialogContent, MatFormField, MatLabel, MatError, MatSelect, MatOption, MatDialogActions,ReactiveFormsModule,CommonModule],
+  imports: [MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule,MatDialogContent, MatFormField, MatLabel, MatError, MatSelect, MatOption, MatDialogActions, ReactiveFormsModule, CommonModule, MatDatepickerToggle, MatDatepicker],
   templateUrl: './batch-form.html',
   styleUrl: './batch-form.scss',
 })
