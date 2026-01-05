@@ -1,1 +1,39 @@
-<p>batch-form works!</p>
+<h2 mat-dialog-title>{{ isEdit ? 'Edit Batch' : 'Add Batch' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="form-grid">
+    <mat-form-field appearance="outline">
+      <mat-label>Batch name</mat-label>
+      <input matInput formControlName="batchName" placeholder="e.g., Jan 2026 Cohort">
+      <mat-error *ngIf="form.controls.batchName.hasError('required')">Name is required</mat-error>
+      <mat-error *ngIf="form.controls.batchName.hasError('minlength')">Min 3 characters</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Start date</mat-label>
+      <input matInput type="date" formControlName="startDate">
+      <mat-error *ngIf="form.controls.startDate.invalid">Required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>End date</mat-label>
+      <input matInput type="date" formControlName="endDate">
+      <mat-error *ngIf="form.controls.endDate.invalid">Required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="isActive">
+        <mat-option [value]="true">Active</mat-option>
+        <mat-option [value]="false">Inactive</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid">
+    {{ isEdit ? 'Update' : 'Save' }}
+  </button>
+</mat-dialog-actions>
